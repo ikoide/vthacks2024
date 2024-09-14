@@ -31,40 +31,7 @@ interface LoginPageAndSignUpProps {
 
 const LoginPageAndSignUp: React.FC<LoginPageAndSignUpProps> = ({ setUserData }) => {
   const navigate = useNavigate();
-
-
-  const updateUserData = () => {
-    // grab session from local storage
-    const session = localStorage.getItem('session');
-    if (session && session !== 'undefined' && session !== 'null' && session !== '') {
-      // fetch /users/session
-      fetch(`${API_URL}/users/${session}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log('The data is: ', data);
-          // if data.email is null then clear local storage and go to login apge
-          if (data.email === null) {
-            localStorage.removeItem('session');
-            navigate('/login-or-signup');
-          }
-
-          setUserData(data);
-          navigate('/add-drop');
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          // remove session from local storage
-          localStorage.removeItem('session');
-        });
-    } else {
-      navigate('/login-or-signup');
-    } 
-  }
+  
 
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');

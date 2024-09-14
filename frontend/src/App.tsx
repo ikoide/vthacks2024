@@ -10,17 +10,17 @@ import "./styles/styles.scss"
 interface UserData {
   courses_to_add: string[];
   courses_to_drop: string[];
+  sess_id: string;
   // Include other user data properties as necessary
 }
 
 function App() {
   const location = useLocation();
-  const [userData, setUserData] = useState<UserData>({ courses_to_add: [], courses_to_drop: [] });
+  const [userData, setUserData] = useState<UserData>({ courses_to_add: [], courses_to_drop: [] , sess_id: ""});
 
   const navigate = useNavigate();
 
   useEffect(() => {
-
         // grab session from local storage
         const session = localStorage.getItem("session");
         if (session && session !== "undefined" && session !== "null" && session !== "") {
