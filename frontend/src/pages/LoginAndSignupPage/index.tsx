@@ -123,6 +123,7 @@ const LoginPageAndSignUp: React.FC<LoginPageAndSignUpProps> = ({ setUserData }) 
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log("Data when creating new user: ", data);
           localStorage.setItem('session', data.sess_id);
           data.courses_to_add = [];
           data.courses_to_drop = [];

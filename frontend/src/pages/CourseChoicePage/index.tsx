@@ -111,7 +111,6 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Header />
       <Box className="course-choice-page">
         {/* Add Course Section */}
         <Paper className="section" elevation={3}>
