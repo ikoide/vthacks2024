@@ -1,8 +1,24 @@
 import React from "react";
 import { Toolbar, Typography, Button, Box } from "@mui/material";
 import "../styles/styles.scss"
+import { useNavigate } from "react-router-dom";
 
-const Header: React.FC = () => {
+interface UserData {
+  courses_to_add: string[];
+  courses_to_drop: string[];
+  sess_id: string;
+  // Include other user data properties as necessary
+}
+
+interface HeaderProps {
+
+  setUserData: React.Dispatch<React.SetStateAction<UserData>>;
+
+}
+
+const Header: React.FC<HeaderProps> = ({ setUserData }) => {
+  const navigate = useNavigate();
+
   return (
       <header>
         <Toolbar>
@@ -14,7 +30,11 @@ const Header: React.FC = () => {
           <Button
             color="inherit"
             sx={{ color: "#ffffff" }}
-            onClick={() => {}}
+            onClick={() => {
+              localStorage.removeItem("session");
+              setUserData({});
+              navigate("/login-or-signup");
+            }}
           >
             Logout
           </Button>

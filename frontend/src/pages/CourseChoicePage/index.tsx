@@ -12,7 +12,6 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import "./assets/style.scss";
 import { useNavigate } from "react-router-dom";
-import Header from "../../components/header";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -102,7 +101,6 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <Header />
       <Box className="course-choice-page">
         {/* Add Course Section */}
         <Paper className="section" elevation={3}>

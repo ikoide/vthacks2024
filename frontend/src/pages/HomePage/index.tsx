@@ -11,6 +11,7 @@ const HomePage = ({ userData, setUserData }: any): JSX.Element => {
 
 
     useEffect(() => {
+        console.log(API_URL)
     }
     , []);
 
