@@ -7,12 +7,16 @@ from mongoengine import (
     CASCADE,
 )
 from collections import defaultdict
+import requests
+
+from flask import current_app
 
 from vt.core.models.user import User
 from vt.core.models.swap import Swap
 
 
 def match_user_in_cycles(target_user_id, max_cycle_length=3):
+    current_app.logger.info(target_user_id)
     # Step 1: Retrieve all users from the database
     users = list(User.objects())
 
@@ -36,6 +40,9 @@ def match_user_in_cycles(target_user_id, max_cycle_length=3):
         for item in user.courses_to_add:
             user_wants[item].add(user_id)
 
+    # **Initialize swaps list to collect swaps involving the target user**
+    swaps = []
+
     # Build edges based on has/wants
     for item in user_has:
         has_users = user_has[item]
@@ -44,6 +51,9 @@ def match_user_in_cycles(target_user_id, max_cycle_length=3):
             for wants_user in wants_users:
                 if has_user != wants_user:
                     graph[has_user].append(wants_user)
+
+    current_app.logger.info(f"user_has: {dict(user_has)}")
+    current_app.logger.info(f"user_wants: {dict(user_wants)}")
 
     # Step 2: Find all simple cycles involving the target user up to max_cycle_length
     cycles = []
@@ -86,16 +96,17 @@ def match_user_in_cycles(target_user_id, max_cycle_length=3):
         total_priority = sum(priority_scores[user_id] for user_id in cycle)
         cycle_weights.append((total_priority, cycle))
 
-    # Step 4: Select the best cycle involving the target user and create a Swap
+    # Step 4: Select cycles involving the target user and create Swaps
     # Sort cycles by total priority score in descending order
     cycle_weights.sort(reverse=True)
 
     matched_users = set()
-    swaps_created = False  # Flag to check if a swap was created
 
     for _, cycle in cycle_weights:
-        if not any(user_id in matched_users for user_id in cycle):
-            # Users in this cycle are not matched yet
+        # Allow the target user to be in multiple swaps but prevent others from being in multiple swaps
+        if not any(
+            user_id in matched_users for user_id in cycle if user_id != target_user
+        ):
             # Build the list of items being swapped
             items = []
             valid_cycle = True
@@ -118,32 +129,74 @@ def match_user_in_cycles(target_user_id, max_cycle_length=3):
                 # Create Swap object
                 swap_users = [user_data[user_id] for user_id in cycle]
                 swap = Swap(users=swap_users, items=items)
+                current_app.logger.info(swap)
                 swap.save()
-                # Update matched users
-                matched_users.update(cycle)
+
+                # Call notify_users_email with users' emails
+                # notify_users_email([user.email for user in swap_users])
+
+                # Update matched users (excluding the target user)
+                matched_users.update(
+                    user_id for user_id in cycle if user_id != target_user
+                )
+
                 # Update user documents to reflect participation in a swap
                 for i in range(len(cycle)):
                     user = user_data[cycle[i]]
                     item_dropped = items[i]
                     item_received = items[i - 1]  # Item received from the previous user
+
                     # Remove item_dropped from courses_to_drop
                     if item_dropped in user.courses_to_drop:
                         user.courses_to_drop.remove(item_dropped)
+
                     # Remove item_received from courses_to_add
                     if item_received in user.courses_to_add:
                         user.courses_to_add.remove(item_received)
+
                     user.save()
-                swaps_created = True
-                break  # We can break after creating one swap involving the target user
+
+                    # **Update user_has and user_wants dictionaries**
+                    user_has[item_dropped].discard(user.sess_id)
+                    user_wants[item_received].discard(user.sess_id)
+
+                # **Append swap to the swaps list**
+                current_app.logger.info(swap)
+                swaps.append(swap)
             else:
                 # Invalid cycle, skip
                 continue
 
-    if not swaps_created:
-        print(f"No swap cycles found involving user {target_user_id}")
+    if swaps:
+        print(f"{len(swaps)} swap(s) involving user {target_user_id} created.")
     else:
-        print(f"Swap involving user {target_user_id} created.")
+        print(f"No swap cycles found involving user {target_user_id}")
 
-    # Optionally, return the swap created
-    swap = Swap.objects(users=target_user_id).first()
-    return swap
+    # **Return the list of swaps involving the target user**
+    return swaps
+
+
+def notify_users_email(recipients):
+    for email in recipients:
+        payload = {
+            "sender": {"email": "mail@hokieswap.com", "name": "HokieSWAP"},
+            "to": [{"email": email}],
+            "subject": "You have a new swap available!",
+            "htmlContent": "<a href='#'>Accept</a><br><a href='#'>Deny</a>",
+        }
+        send_email(payload)
+
+
+def send_email(payload):
+    url = "https://api.sendinblue.com/v3/smtp/email"
+    headers = {
+        "accept": "application/json",
+        "api-key": "YOUR_API_KEY_HERE",
+        "content-type": "application/json",
+    }
+    # Send email with requests
+    resp = requests.post(url, headers=headers, json=payload)
+    print(resp)
+    print(resp.text)
+    # Handle response as needed
+

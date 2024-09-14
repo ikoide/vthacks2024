@@ -8,6 +8,7 @@ from vt.apis.users.business import (
     delete_user,
     login_user,
     delete_users,
+    scan_user,
 )
 from vt.apis.users.dto import user_model, get_user_model, post_user_model
 from vt.apis.users.parsers import user_parser
@@ -68,3 +69,9 @@ class User(Resource):
 class UserLogin(Resource):
     def post(self, email):
         return login_user(email, users_ns.payload)
+
+
+@users_ns.route("/<string:id>/scan", endpoint="users_scan")
+class ScanUser(Resource):
+    def get(self, id):
+        return scan_user(id)

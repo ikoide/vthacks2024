@@ -1,10 +1,12 @@
 from bson.json_util import dumps
 import json
+import random
 
 from mongoengine.queryset.visitor import Q
 
 from vt.core.models.user import User
 from vt.util.make_request import to_serializable
+from vt.apis.swaps.tasks import match_user_in_cycles
 
 
 def create_user(data):
@@ -27,11 +29,7 @@ def update_user(user, data):
     try:
         for key, value in data.items():
             if hasattr(user, key):
-                attr_value = getattr(user, key)
-
-                if attr_value != value:
-                    new_value = type(attr_value)(value)
-                    setattr(user, key, new_value)
+                setattr(user, key, value)
 
         user.save()
 
@@ -80,3 +78,13 @@ def login_user(email, data):
         return str(user.sess_id)
     else:
         return None
+
+
+def scan_user(user):
+    swaps = match_user_in_cycles(user)
+    swaps_dict = []
+    for swap in swaps:
+        swap_dict = json.loads(dumps(swap.to_mongo()))
+        swaps_dict.append(swap_dict)
+
+    return swaps_dict

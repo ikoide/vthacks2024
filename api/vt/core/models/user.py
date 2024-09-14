@@ -3,7 +3,7 @@ from mongoengine import Document, StringField, ListField, FloatField
 
 
 class User(Document):
-    sess_id = StringField(default=str(uuid.uuid4()), required=True)
+    sess_id = StringField(default=lambda: str(uuid.uuid4()), required=True, unique=True)
     name = StringField(required=True)
     priority_score = FloatField(default=0.5)
 
