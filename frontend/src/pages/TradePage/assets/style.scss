@@ -1,0 +1,80 @@
+.trade-page {
+    background-color: #121212; // Dark background
+    color: #ffffff; // White text
+    padding: 16px;
+  
+    .MuiTypography-root {
+      color: #ffffff;
+    }
+  
+    .table-container {
+      margin-top: 16px;
+  
+      .MuiPaper-root {
+        background-color: #1e1e1e;
+      }
+  
+      .MuiTableCell-root {
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+  
+      .MuiTableHead-root {
+        .MuiTableCell-root {
+          font-weight: bold;
+        }
+      }
+    }
+  
+    .current-user-row {
+      background-color: #2e2e2e;
+  
+      .MuiTableCell-root {
+        font-weight: bold;
+      }
+    }
+  
+    .trade-details {
+      margin-top: 24px;
+  
+      .MuiTypography-root {
+        margin-bottom: 8px;
+      }
+  
+      .input-field {
+        margin-top: 16px;
+        margin-bottom: 16px;
+  
+        .MuiInputBase-root {
+          background-color: #1e1e1e;
+          color: #ffffff;
+        }
+  
+        .MuiInputLabel-root {
+          color: rgba(255, 255, 255, 0.7);
+        }
+  
+        .MuiOutlinedInput-notchedOutline {
+          border-color: rgba(255, 255, 255, 0.23);
+        }
+      }
+  
+      .ready-button {
+        margin-top: 16px;
+      }
+    }
+  
+    .concluded-screen {
+      text-align: center;
+      margin-top: 50px;
+  
+      .MuiTypography-root {
+        margin-bottom: 16px;
+      }
+  
+      .dashboard-button {
+        margin-top: 24px;
+      }
+    }
+  }
+  

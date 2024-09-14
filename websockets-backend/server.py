@@ -2,6 +2,7 @@ from sanic import Sanic
 from sanic.response import json as sanic_json
 from sanic import response
 import json
+import requests
 
 app = Sanic("Websockets-Backend")
 
@@ -51,6 +52,7 @@ async def websocket_handler(request, ws):
             else:
                 await ws.send(json.dumps({"type": "error", "message": "Trade not found"}))
         elif data["type"] == "trade_ready":
+            print("SOJMEONE IS READYADSF")
             # Update the trade data
             on_going_trades[data["trade_id"]][data["user_id"]]["cookies"] = data["cookies"]
             on_going_trades[data["trade_id"]][data["user_id"]]["ready"] = True
@@ -60,8 +62,25 @@ async def websocket_handler(request, ws):
                 await client_ws.send(json.dumps({"type": "trade_data", "trade": on_going_trades[data["trade_id"]]}))
             # Check if all users are ready
             if all(user_data["ready"] for user_data in on_going_trades[data["trade_id"]].values()):
-                # Initiate trade (Implement trade logic here)
-                pass
+                # remove the trade from on_going_trades
+
+                requests.post(f"http://172.31.69.54:5001/swaps/{data['trade_id']}/ready", json=on_going_trades[data["trade_id"]])
+                
+                del on_going_trades[data["trade_id"]]
+                # Broadcast end trade to all clients in this trade
+                for client_ws in trade_clients:
+                    await client_ws.send(json.dumps({"type": "end_trade"}))
+
+
+                
+
+                
+
+
+                
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8000,   auto_reload=True)
+
+
+
