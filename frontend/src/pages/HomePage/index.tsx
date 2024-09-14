@@ -1,29 +1,35 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useEffect } from "react";
 import Button from "@mui/material/Button";
+const API_URL = import.meta.env.VITE_API_URL;
 
-const HomePage = ({ userData }: any): JSX.Element => {
+const HomePage = ({ userData, setUserData }: any): JSX.Element => {
     const navigate = useNavigate();
 
     // Check if userData is not null/undefined and has keys (is not an empty object)
     const isLoggedIn = userData && Object.keys(userData).length > 0;
+
+
+    useEffect(() => {
+    }
+    , []);
 
     return (
         <div>
             {isLoggedIn ? (
                 <div className="landing-page">
                     <p>Welcome, {userData.name}!</p>
+                    <p>Email: {userData.email}</p>
                     <Button
                         variant="contained"
                         className="logout-button"
                         sx={{ textTransform: 'none' }}
                         onClick={() => {
-                            // navigate to a logout or user profile page
-                            navigate("/profile");
+                            localStorage.removeItem("session");
+                            setUserData({});
                         }}
                     >
-                        Go to Profile
+                        Logout
                     </Button>
                 </div>
             ) : (

@@ -1,60 +1,140 @@
-import { useState } from "react";
-import { AddDrop } from "./AddDrop";
+import React, { useState } from "react";
+import {
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  IconButton,
+  ThemeProvider,
+  createTheme,
+  Box,
+} from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
+import "./assets/style.scss";
 
-export const CourseChoicePage = () => {
-  const [isAddMode, setIsAddMode] = useState(true); // Track whether we're in Add or Drop mode
+interface UserData {
+  courses_to_add: string[];
+  courses_to_drop: string[];
+  // Include other user data properties as necessary
+}
 
-  // State for the "Add" AddDrop
-  const [addNumberOfCourses, setAddNumberOfCourses] = useState(1);
-  const [addAllInputs, setAddAllInputs] = useState<string[]>([""]);
 
-  const handleAddAnotherAddCourse = () => {
-    if (addNumberOfCourses < 2) {
-      setAddNumberOfCourses(addNumberOfCourses + 1);
-      setAddAllInputs([...addAllInputs, ""]);
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
+
+import { Dispatch, SetStateAction } from 'react';
+
+interface CourseChoicePageProps {
+  userData: UserData; 
+  setUserData: Dispatch<SetStateAction<any>>; // Specify the exact type of your state
+}
+
+const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserData }) => {
+  const [addInput, setAddInput] = useState<string>("");
+  const [dropInput, setDropInput] = useState<string>("");
+
+  const handleAddCourse = (): void => {
+    if (addInput.trim() !== "") {
+      const updatedCoursesToAdd = [...userData.courses_to_add, addInput.trim()];
+      setUserData({...userData, courses_to_add: updatedCoursesToAdd});
+      setAddInput("");
     }
   };
 
-  // State for the "Drop" AddDrop
-  const [dropNumberOfCourses, setDropNumberOfCourses] = useState(1);
-  const [dropAllInputs, setDropAllInputs] = useState<string[]>([""]);
-
-  const handleAddAnotherDropCourse = () => {
-    if (dropNumberOfCourses < 2) {
-      setDropNumberOfCourses(dropNumberOfCourses + 1);
-      setDropAllInputs([...dropAllInputs, ""]);
+  const handleDropCourse = (): void => {
+    if (dropInput.trim() !== "") {
+      const updatedCoursesToDrop = [...userData.courses_to_drop, dropInput.trim()];
+      setUserData({...userData, courses_to_drop: updatedCoursesToDrop});
+      setDropInput("");
     }
   };
 
-  // Handle switching between Add and Drop mode
-  const handleNextClick = () => {
-    setIsAddMode(false); // Switch to Drop mode when Next is clicked
+  const removeAddCourse = (index: number): void => {
+    const filteredCoursesToAdd = userData.courses_to_add.filter((_, i) => i !== index);
+    setUserData({...userData, courses_to_add: filteredCoursesToAdd});
+  };
+
+  const removeDropCourse = (index: number): void => {
+    const filteredCoursesToDrop = userData.courses_to_drop.filter((_, i) => i !== index);
+    setUserData({...userData, courses_to_drop: filteredCoursesToDrop});
   };
 
   return (
-    <div>
-      {isAddMode ? (
-        <div>
-          <h1>Add Courses</h1>
-          <AddDrop
-            numberOfCourses={addNumberOfCourses}
-            allInputs={addAllInputs}
-            setAllInputs={setAddAllInputs}
-            handleAddAnotherCourse={handleAddAnotherAddCourse}
-          />
-        </div>
-      ) : (
-        <div>
-          <h1>Drop Courses</h1>
-          <AddDrop
-            numberOfCourses={dropNumberOfCourses}
-            allInputs={dropAllInputs}
-            setAllInputs={setDropAllInputs}
-            handleAddAnotherCourse={handleAddAnotherDropCourse}
-          />
-        </div>
-      )}
-      <button onClick={handleNextClick}>Next</button>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <Box className="course-choice-page">
+        {/* Add Course Section */}
+        <Paper className="section" elevation={3}>
+          <Typography variant="h4" gutterBottom>
+            Add Courses
+          </Typography>
+          <Box display="flex" alignItems="center" mb={2}>
+            <TextField
+              label="Enter course ID to add"
+              variant="outlined"
+              value={addInput}
+              onChange={(e) => setAddInput(e.target.value)}
+              className="input-field"
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddCourse}
+              className="add-button"
+            >
+              Add Course
+            </Button>
+          </Box>
+          <Box>
+            {userData.courses_to_add.map((course, index) => (
+              <Paper key={index} className="course-item" elevation={2}>
+                <Typography variant="body1">{course}</Typography>
+                <IconButton onClick={() => removeAddCourse(index)}>
+                  <CloseIcon />
+                </IconButton>
+              </Paper>
+            ))}
+          </Box>
+        </Paper>
+
+        {/* Drop Course Section */}
+        <Paper className="section" elevation={3}>
+          <Typography variant="h4" gutterBottom>
+            Drop Courses
+          </Typography>
+          <Box display="flex" alignItems="center" mb={2}>
+            <TextField
+              label="Enter course ID to drop"
+              variant="outlined"
+              value={dropInput}
+              onChange={(e) => setDropInput(e.target.value)}
+              className="input-field"
+            />
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleDropCourse}
+              className="drop-button"
+            >
+              Drop Course
+            </Button>
+          </Box>
+          <Box>
+            {userData.courses_to_drop.map((course, index) => (
+              <Paper key={index} className="course-item" elevation={2}>
+                <Typography variant="body1">{course}</Typography>
+                <IconButton onClick={() => removeDropCourse(index)}>
+                  <CloseIcon />
+                </IconButton>
+              </Paper>
+            ))}
+          </Box>
+        </Paper>
+      </Box>
+    </ThemeProvider>
   );
 };
+
+export default CourseChoicePage;

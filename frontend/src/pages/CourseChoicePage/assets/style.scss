@@ -1,0 +1,64 @@
+.course-choice-page {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    .section {
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 40px;
+      padding: 20px;
+      background-color: #424242;
+  
+      .MuiTypography-root {
+        color: #ffffff;
+      }
+  
+      .input-field {
+        flex: 1;
+        margin-right: 10px;
+  
+        .MuiOutlinedInput-root {
+          background-color: #616161;
+  
+          .MuiOutlinedInput-notchedOutline {
+            border-color: #757575;
+          }
+  
+          &:hover .MuiOutlinedInput-notchedOutline {
+            border-color: #ffffff;
+          }
+        }
+  
+        .MuiInputLabel-root {
+          color: #bdbdbd;
+        }
+      }
+  
+      .add-button,
+      .drop-button {
+        height: 56px;
+        color: #ffffff;
+      }
+  
+      .course-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #616161;
+  
+        .MuiTypography-root {
+          flex: 1;
+          color: #ffffff;
+        }
+  
+        .MuiIconButton-root {
+          color: #ffffff;
+        }
+      }
+    }
+  }
+  
