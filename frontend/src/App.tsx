@@ -11,6 +11,9 @@ import ThankYouPage from './pages/ThankYouPage';
 import Header from "./components/header";
 const API_URL = import.meta.env.VITE_API_URL;
 import "./styles/styles.scss"
+import TradePage from './pages/TradePage';
+import SuccessPage from './pages/SuccessPage';
+import FailurePage from './pages/FailurePage';
 interface UserData {
   courses_to_add: string[];
   courses_to_drop: string[];
@@ -45,7 +48,7 @@ function App() {
                   }
 
                     setUserData(data);
-                    navigate("/add-drop")
+                    // navigate("/add-drop")
                 })
                 .catch((error) => {
                     console.error("Error:", error);
@@ -66,6 +69,9 @@ function App() {
       <Route path="*" element={<NotFound404 />} />
       <Route path="/add-drop" element={<CourseChoicePage userData={userData} setUserData={setUserData} />} />
       <Route path="/thank-you" element={<ThankYouPage />} />
+      <Route path="/trade" element={<TradePage />} />
+        <Route path="/trade-success" element={<SuccessPage />} />
+        <Route path="/trade-failure" element={<FailurePage />} />
     </Routes>
     </>
   )

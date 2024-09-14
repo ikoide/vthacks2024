@@ -10,7 +10,6 @@ import {
   AccordionDetails,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Header from '../../components/header';
 import "./styles/styles.scss"
 
 const darkTheme = createTheme({
@@ -22,7 +21,6 @@ const darkTheme = createTheme({
 const ThankYouPage: React.FC = () => {
   return (
     <ThemeProvider theme={darkTheme}>
-      <Header />
       <Box className="thank-you-page">
         <Paper className="section" elevation={3}>
           <Typography variant="h4" gutterBottom>
