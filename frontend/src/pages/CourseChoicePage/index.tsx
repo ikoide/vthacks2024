@@ -19,7 +19,7 @@ interface UserData {
   courses_to_add: string[];
   courses_to_drop: string[];
   sess_id: string;
-  // Include other user data properties as necessary
+  email: string;
 }
 
 const darkTheme = createTheme({
@@ -179,7 +179,21 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
           <Button
             variant="contained"
             color="success"
-            onClick={() => navigate("/thank-you")}
+            onClick={() => {
+
+              // post to backend /users/session_id/scan
+              fetch(`${API_URL}/users/${userData.sess_id}/scan`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                }}).then((res) => res.json())
+                .then((data) => {
+                  console.log("Backend returned:", data);
+                })
+
+
+              navigate("/thank-you")
+            }}
             fullWidth
             size="large"
           >

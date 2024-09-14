@@ -1,157 +1,154 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Typography,
-  Paper,
-  ThemeProvider,
-  createTheme,
-  Box,
-  TextField,
-  Button,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from '@mui/material';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const WEBSOCKET_URL = import.meta.env.VITE_SOCKET_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useNavigate } from 'react-router-dom';
-import '../../components/styles/styles.scss';
+interface TradeData {
+    [userId: string]: {
+        drop: any;
+        add: any;
+        cookies: any;
+        ready: boolean;
+    };
+}
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
+interface UserData {
+  courses_to_add: string[];
+  courses_to_drop: string[];
+  sess_id: string;
+  email: string;
+}
 
-const TradePage: React.FC = () => {
-  // State variables
-  const [pairStatus, setPairStatus] = useState<'Offline' | 'Online' | 'Entered Cookies'>('Offline');
-  const [cookies, setCookies] = useState<string>('');
-  const [hasSubmittedCookies, setHasSubmittedCookies] = useState<boolean>(false);
-  const [pairHasSubmittedCookies, setPairHasSubmittedCookies] = useState<boolean>(false);
-  const [timeLeft, setTimeLeft] = useState<number>(600); // 10 minutes in seconds
-  const navigate = useNavigate();
+interface TradePagePageProps {
+  userData: UserData; 
+}
 
-  const socket = new WebSocket(WEBSOCKET_URL);
+const TradePage: React.FC<TradePagePageProps> = ({ userData }) => {
+    const { trade_id } = useParams<{ trade_id: string }>();
+    const [tradeData, setTradeData] = useState<TradeData>({});
+    const [cookies, setCookies] = useState('');
+    const [socket, setSocket] = useState<WebSocket | null>(null);
 
-  // Start the countdown timer
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      // Time's up, navigate to expired page
-      navigate('/trade-expired');
-    }
+    const currentUserId = userData.email;
 
-    const timerId = setInterval(() => {
-      setTimeLeft((time) => time - 1);
-    }, 1000);
+    const navigate = useNavigate();
 
-    return () => clearInterval(timerId);
-  }, [timeLeft, navigate]);
+    useEffect(() => {
+        const socket = new WebSocket(WEBSOCKET_URL);
 
-  // Check if both users have submitted cookies
-  useEffect(() => {
-    if (hasSubmittedCookies && pairHasSubmittedCookies) {
-      // Both have submitted cookies, navigate to success page
-      navigate('/trade-success');
-    }
-  }, [hasSubmittedCookies, pairHasSubmittedCookies, navigate]);
+        socket.onopen = () => {
+            const session = localStorage.getItem("session");
+            if (session && session !== "undefined" && session !== "null" && session !== "") {
+            fetch(`${API_URL}/users/${session}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("The data is: ", data);
+                // if data.email is null then clear local storage and go to login apge
+                if (data.email === null) {
+                    localStorage.removeItem("session");
+                    navigate("/login-or-signup");
+                }
 
-  // Simulate the pair's status and actions
-  useEffect(() => {
-    // Simulate the pair coming online after 2 seconds
-    setTimeout(() => {
-      setPairStatus('Online');
-    }, 2000);
+                const message = {
+                    "fuck": "fuck",
+                    type: 'join_trade',
+                    trade_id: trade_id,
+                    user_id: data.email
+                };
+                socket.send(JSON.stringify(message));
+                // navigate("/add-drop")
+            })
+        } else navigate("/login-or-signup");
+            
 
-    // Simulate the pair submitting cookies after 5 seconds
-    setTimeout(() => {
-      setPairHasSubmittedCookies(true);
-      setPairStatus('Entered Cookies');
-    }, 5000);
-  }, []);
+        };
 
-  const handleSubmitCookies = () => {
-    setHasSubmittedCookies(true);
-  };
+        socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'trade_data') {
+                setTradeData(data.trade);
+            } else if (data.type === 'error') {
+                console.error(data.message);
+            }
+        };
 
-  const formatTimeLeft = (seconds: number) => {
-    const minutes = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-  };
+        socket.onclose = () => {
+            console.log('WebSocket disconnected');
+        };
 
-  return (
-    <ThemeProvider theme={darkTheme}>
-      <Box className="trade-page">
-        <Paper className="section" elevation={3}>
-          <Typography variant="h4" gutterBottom>
-            Trade In Progress
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Time remaining: {formatTimeLeft(timeLeft)}
-          </Typography>
-          <Typography variant="body1" gutterBottom>
-            Your pair's status: <strong>{pairStatus}</strong>
-          </Typography>
-          <Box mt={2}>
-            <TextField
-              label="Enter your cookies"
-              variant="outlined"
-              value={cookies}
-              onChange={(e) => setCookies(e.target.value)}
-              fullWidth
-              multiline
-              rows={4}
-              disabled={hasSubmittedCookies}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSubmitCookies}
-              disabled={hasSubmittedCookies}
-              style={{ marginTop: '10px' }}
-              fullWidth
-            >
-              Submit
-            </Button>
-          </Box>
-        </Paper>
-        {/* FAQ Accordion */}
-        <Paper className="section" elevation={3}>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="faq-content"
-              id="faq-header"
-            >
-              <Typography variant="h6">How do I complete my swap?</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography variant="body1">
-                To complete your swap:
-                <ol>
-                  <li>Log into Hokie Spa within 10 minutes of receiving the email notification.</li>
-                  <li>Copy your session cookies:
-                    <ol type="a">
-                      <li>Open your web browser and navigate to Hokie Spa.</li>
-                      <li>Open the developer tools by pressing <strong>F12</strong> or right-clicking and selecting <strong>Inspect</strong>.</li>
-                      <li>Go to the <strong>Application</strong> (Chrome) or <strong>Storage</strong> (Firefox) tab.</li>
-                      <li>In the left sidebar, under <strong>Storage</strong>, click on <strong>Cookies</strong>, then select the Hokie Spa website.</li>
-                      <li>Locate the relevant session cookies (e.g., <strong>JSESSIONID</strong>), and copy their values.</li>
-                    </ol>
-                  </li>
-                  <li>Return to our website and paste the copied cookies into the designated field.</li>
-                  <li>Once your swap partner completes the same steps, the trade will be executed automatically.</li>
-                </ol>
-                If you need further assistance, please contact our support team.
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        </Paper>
-      </Box>
-    </ThemeProvider>
-  );
+        setSocket(socket);
+
+        return () => {
+            socket.close();
+        };
+    }, []);
+
+    const handleReady = () => {
+        if (socket) {
+            const message = {
+                type: 'trade_ready',
+                trade_id: trade_id,
+                user_id: currentUserId,
+                cookies: cookies,
+            };
+            socket.send(JSON.stringify(message));
+        }
+    };
+
+    return (
+        <div>
+          {JSON.stringify(tradeData)}
+            <h2>Trade Status</h2>
+            <table border={1}>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>Status</th>
+                        <th>Items to Drop</th>
+                        <th>Items to Receive</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Object.entries(tradeData).map(([userId, userData]) => (
+                        <tr key={userId} style={{ backgroundColor: userId === currentUserId ? '#e0ffe0' : 'transparent' }}>
+                            <td>{userId === currentUserId ? `${userId} (You)` : userId}</td>
+                            <td>{userData.ready ? 'Ready' : 'Not Ready'}</td>
+                            <td>{JSON.stringify(userData.drop)}</td>
+                            <td>{JSON.stringify(userData.add)}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+
+            {tradeData[currentUserId] && (
+                <div>
+                    <h3>Your Trade Details</h3>
+                    <p>Items you are dropping: {JSON.stringify(tradeData[currentUserId].drop)}</p>
+                    <p>Items you will receive: {JSON.stringify(tradeData[currentUserId].add)}</p>
+
+                    <div>
+                        <label>Cookies: </label>
+                        <input
+                            type="text"
+                            value={cookies}
+                            onChange={(e) => setCookies(e.target.value)}
+                            placeholder="Enter your cookies"
+                        />
+                    </div>
+                    <button onClick={handleReady} disabled={tradeData[currentUserId].ready}>
+                        {tradeData[currentUserId].ready ? 'Ready' : 'Mark as Ready'}
+                    </button>
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default TradePage;

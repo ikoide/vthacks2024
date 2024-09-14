@@ -7,6 +7,7 @@ interface UserData {
   courses_to_add: string[];
   courses_to_drop: string[];
   sess_id: string;
+  email: string;
   // Include other user data properties as necessary
 }
 
@@ -32,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({ setUserData }) => {
             sx={{ color: "#ffffff" }}
             onClick={() => {
               localStorage.removeItem("session");
-              setUserData({});
+              setUserData({courses_to_add: [], courses_to_drop: [], sess_id: "", email: ""});
               navigate("/login-or-signup");
             }}
           >
