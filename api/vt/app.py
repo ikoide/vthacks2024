@@ -5,6 +5,7 @@ from werkzeug.exceptions import HTTPVersionNotSupported
 
 from mongoengine import connect
 
+from vt.extensions import cors
 from vt.apis import api
 
 
@@ -20,6 +21,7 @@ def create_app(config_filename="flask.cfg"):
 
 def initialize_extensions(app):
     api.init_app(app)
+    cors.init_app(app)
 
     return None
 

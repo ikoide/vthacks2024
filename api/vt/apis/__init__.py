@@ -1,7 +1,7 @@
 from flask_restx import Api
 
 from vt.apis.users.endpoints import users_ns
-from vt.apis.courses.endpoints import courses_ns
+from vt.apis.swaps.endpoints import swaps_ns
 
 api = Api(
     title="VTHacks API",
@@ -10,5 +10,5 @@ api = Api(
     doc="/docs",
 )
 
-api.add_namespace(courses_ns, path="/courses")
 api.add_namespace(users_ns, path="/users")
+api.add_namespace(swaps_ns, path="/swaps")

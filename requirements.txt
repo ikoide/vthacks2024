@@ -9,3 +9,4 @@ mongoengine==0.29.0
 pymongo==4.8.0
 Werkzeug==3.0.4
 flask-restx
+flask-cors

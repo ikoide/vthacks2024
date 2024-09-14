@@ -6,6 +6,7 @@ from vt.apis.users.business import (
     get_user,
     update_user,
     delete_user,
+    login_user,
 )
 from vt.apis.users.dto import user_model, get_user_model, post_user_model
 from vt.apis.users.parsers import user_parser
@@ -52,3 +53,9 @@ class User(Resource):
     def delete(self, id):
         user = get_user(id)
         return delete_user(user)
+
+
+@users_ns.route("/<string:email>/login", endpoint="users_login")
+class UserLogin(Resource):
+    def post(self, email):
+        return login_user(email, users_ns.payload)
