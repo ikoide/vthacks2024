@@ -32,7 +32,7 @@ const darkTheme = createTheme({
 });
 
 import { Dispatch, SetStateAction } from 'react';
-import Header from "../../components/header";
+
 
 interface CourseChoicePageProps {
   userData: UserData; 

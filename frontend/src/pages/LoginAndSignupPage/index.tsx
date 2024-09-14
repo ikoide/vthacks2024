@@ -31,7 +31,6 @@ interface LoginPageAndSignUpProps {
 
 const LoginPageAndSignUp: React.FC<LoginPageAndSignUpProps> = ({ setUserData }) => {
   const navigate = useNavigate();
-  
 
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -123,7 +122,7 @@ const LoginPageAndSignUp: React.FC<LoginPageAndSignUpProps> = ({ setUserData }) 
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log("Data when creating new user: ", data);
+          console.log('Data when creating new user: ', data);
           localStorage.setItem('session', data.sess_id);
           data.courses_to_add = [];
           data.courses_to_drop = [];
@@ -165,6 +164,11 @@ const LoginPageAndSignUp: React.FC<LoginPageAndSignUpProps> = ({ setUserData }) 
               onChange={handleEmailChange}
               disabled={page !== Page.EMAIL}
               fullWidth
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && page === Page.EMAIL) {
+                  handleNext();
+                }
+              }}
             />
             {(page === Page.PASSWORD || page === Page.SIGNUP) && (
               <TextField
@@ -174,6 +178,11 @@ const LoginPageAndSignUp: React.FC<LoginPageAndSignUpProps> = ({ setUserData }) 
                 value={password}
                 onChange={handlePasswordChange}
                 fullWidth
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleNext();
+                  }
+                }}
               />
             )}
           </Box>
