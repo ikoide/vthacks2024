@@ -1,0 +1,27 @@
+services:
+  api:
+    image: vthacks_base
+    container_name: vthacks_api
+    environment:
+      - FLASK_APP=vt.app:create_app
+      - FLASK_DEBUG=1
+    volumes:
+      - ./api:/app
+    expose:
+      - "5000"
+    ports:
+      - "5001:5000"
+    command: ["python", "run.py"]
+
+  mongo:
+    image: mongo:latest
+    container_name: vthacks_mongo
+    environment:
+      - MONGO_INITDB_DATABASE=vthacks
+    volumes:
+      - mongodb_data_container:/data/db
+    ports:
+      - "27018:27017"
+
+volumes:
+  mongodb_data_container:
