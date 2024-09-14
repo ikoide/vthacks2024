@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import LoginPageAndSignUp from './pages/LoginAndSignupPage';
 import NotFound404 from './components/HTTPErrors/NotFound404';
 import CourseChoicePage from './pages/CourseChoicePage';
+import ThankYouPage from './pages/ThankYouPage';
 const API_URL = import.meta.env.VITE_API_URL;
 import "./styles/styles.scss"
 interface UserData {
@@ -59,6 +60,7 @@ function App() {
       <Route path="/login-or-signup" element={<LoginPageAndSignUp setUserData={setUserData} />} />
       <Route path="*" element={<NotFound404 />} />
       <Route path="/add-drop" element={<CourseChoicePage userData={userData} setUserData={setUserData} />} />
+      <Route path="/thank-you" element={<ThankYouPage />} />
     </Routes>
   )
 }

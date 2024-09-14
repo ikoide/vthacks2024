@@ -1,0 +1,27 @@
+.course-choice-page,
+.thank-you-page {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.section {
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.course-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.input-field {
+  flex: 1;
+}
+
+.add-button,
+.drop-button {
+  margin-left: 10px;
+}

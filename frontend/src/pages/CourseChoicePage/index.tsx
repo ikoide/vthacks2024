@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React, { useState, Dispatch, SetStateAction } from "react";
 import {
   TextField,
   Button,
@@ -10,10 +9,10 @@ import {
   createTheme,
   Box,
 } from "@mui/material";
-
 import CloseIcon from '@mui/icons-material/Close';
 import "./assets/style.scss";
-
+import { useNavigate } from "react-router-dom";
+import Header from "../../components/header";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -24,24 +23,21 @@ interface UserData {
   // Include other user data properties as necessary
 }
 
-
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
   },
 });
 
-import { Dispatch, SetStateAction } from 'react';
-import Header from "../../components/header";
-
 interface CourseChoicePageProps {
   userData: UserData; 
-  setUserData: Dispatch<SetStateAction<any>>; // Specify the exact type of your state
+  setUserData: Dispatch<SetStateAction<UserData>>;
 }
 
 const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserData }) => {
   const [addInput, setAddInput] = useState<string>("");
   const [dropInput, setDropInput] = useState<string>("");
+  const navigate = useNavigate();
 
   const updateUserData = (updatedUserData: UserData) => {
     console.log("Updating user data:", updatedUserData);
@@ -61,8 +57,6 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
         console.error("Error updating user data:", error);
       });
   };
-  
-
 
   const handleAddCourse = (): void => {
     if (addInput.trim() !== "") {
@@ -70,12 +64,11 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
       const updatedUserData = { ...userData, courses_to_add: updatedCoursesToAdd };
       setUserData(updatedUserData);
       setAddInput("");
-  
+
       // Update user data in the backend
       updateUserData(updatedUserData);
     }
   };
-  
 
   const handleDropCourse = (): void => {
     if (dropInput.trim() !== "") {
@@ -83,31 +76,29 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
       const updatedUserData = { ...userData, courses_to_drop: updatedCoursesToDrop };
       setUserData(updatedUserData);
       setDropInput("");
-  
+
       // Update user data in the backend
       updateUserData(updatedUserData);
     }
   };
-  
+
   const removeAddCourse = (index: number): void => {
     const filteredCoursesToAdd = userData.courses_to_add.filter((_, i) => i !== index);
     const updatedUserData = { ...userData, courses_to_add: filteredCoursesToAdd };
     setUserData(updatedUserData);
-  
+
     // Update user data in the backend
     updateUserData(updatedUserData);
   };
-  
 
   const removeDropCourse = (index: number): void => {
     const filteredCoursesToDrop = userData.courses_to_drop.filter((_, i) => i !== index);
     const updatedUserData = { ...userData, courses_to_drop: filteredCoursesToDrop };
     setUserData(updatedUserData);
-  
+
     // Update user data in the backend
     updateUserData(updatedUserData);
   };
-  
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -125,12 +116,14 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
               value={addInput}
               onChange={(e) => setAddInput(e.target.value)}
               className="input-field"
+              fullWidth
             />
             <Button
               variant="contained"
               color="primary"
               onClick={handleAddCourse}
               className="add-button"
+              style={{ marginLeft: '10px' }}
             >
               Add Course
             </Button>
@@ -159,12 +152,14 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
               value={dropInput}
               onChange={(e) => setDropInput(e.target.value)}
               className="input-field"
+              fullWidth
             />
             <Button
               variant="contained"
               color="secondary"
               onClick={handleDropCourse}
               className="drop-button"
+              style={{ marginLeft: '10px' }}
             >
               Drop Course
             </Button>
@@ -179,6 +174,19 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
               </Paper>
             ))}
           </Box>
+        </Paper>
+
+        {/* Done Button */}
+        <Paper className="section" elevation={3}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => navigate("/thank-you")}
+            fullWidth
+            size="large"
+          >
+            Done
+          </Button>
         </Paper>
       </Box>
     </ThemeProvider>
