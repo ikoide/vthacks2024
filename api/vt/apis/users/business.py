@@ -1,6 +1,8 @@
 from bson.json_util import dumps
 import json
 
+from mongoengine.queryset.visitor import Q
+
 from vt.core.models.user import User
 from vt.util.make_request import to_serializable
 
@@ -55,6 +57,15 @@ def get_users(filters):
     users_dict = []
     for user in users:
         user_dict = json.loads(dumps(user.to_mongo()))
+        user_dict.pop("password", None)
         users_dict.append(user_dict)
 
     return users_dict
+
+
+def login_user(email, data):
+    user = User.objects(Q(email=email) & Q(password=data["password"])).first()
+    if user:
+        return str(user.id)
+    else:
+        return None

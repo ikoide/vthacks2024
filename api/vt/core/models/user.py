@@ -1,12 +1,13 @@
-from mongoengine import Document, StringField, ListField, ReferenceField
+from mongoengine import Document, StringField, ListField
 
 
 class User(Document):
     email = StringField(required=True, unique=True)
+    name = StringField(required=True)
     password = StringField(required=True)
 
-    courses_to_add = ListField(ReferenceField("Course"))
-    courses_to_drop = ListField(ReferenceField("Course"))
+    courses_to_add = ListField(StringField())
+    courses_to_drop = ListField(StringField())
 
     @classmethod
     def find_by_id(cls, id):
