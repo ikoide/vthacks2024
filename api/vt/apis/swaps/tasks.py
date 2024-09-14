@@ -16,7 +16,7 @@ from vt.core.models.swap import Swap
 
 
 def match_user_in_cycles(target_user_id, max_cycle_length=3):
-    current_app.logger.info(target_user_id)
+    current_app.logger.info(f"Matching swaps for user: {target_user_id}")
     # Step 1: Retrieve all users from the database
     users = list(User.objects())
 
@@ -35,12 +35,14 @@ def match_user_in_cycles(target_user_id, max_cycle_length=3):
         user_data[user_id] = user  # Map user_id to User object
 
         for item in user.courses_to_drop:
-            user_has[item].add(user_id)
+            normalized_item = item.strip().lower()
+            user_has[normalized_item].add(user_id)
 
         for item in user.courses_to_add:
-            user_wants[item].add(user_id)
+            normalized_item = item.strip().lower()
+            user_wants[normalized_item].add(user_id)
 
-    # **Initialize swaps list to collect swaps involving the target user**
+    # Initialize swaps list to collect swaps involving the target user
     swaps = []
 
     # Build edges based on has/wants
@@ -54,6 +56,7 @@ def match_user_in_cycles(target_user_id, max_cycle_length=3):
 
     current_app.logger.info(f"user_has: {dict(user_has)}")
     current_app.logger.info(f"user_wants: {dict(user_wants)}")
+    current_app.logger.info(f"Graph: {dict(graph)}")
 
     # Step 2: Find all simple cycles involving the target user up to max_cycle_length
     cycles = []
@@ -75,6 +78,8 @@ def match_user_in_cycles(target_user_id, max_cycle_length=3):
                 visited.remove(neighbor)
 
     dfs([target_user], set([target_user]), depth=1)
+
+    current_app.logger.info(f"Cycles found: {cycles}")
 
     # Remove duplicate cycles
     unique_cycles = []
@@ -100,79 +105,92 @@ def match_user_in_cycles(target_user_id, max_cycle_length=3):
     # Sort cycles by total priority score in descending order
     cycle_weights.sort(reverse=True)
 
-    matched_users = set()
+    # Remove the constraint that other users can only be in one swap
+    # matched_users = set()
 
     for _, cycle in cycle_weights:
-        # Allow the target user to be in multiple swaps but prevent others from being in multiple swaps
-        if not any(
-            user_id in matched_users for user_id in cycle if user_id != target_user
-        ):
-            # Build the list of items being swapped
-            items = []
-            valid_cycle = True
-            for i in range(len(cycle)):
-                giver_id = cycle[i]
-                receiver_id = cycle[(i + 1) % len(cycle)]
-                giver = user_data[giver_id]
-                receiver = user_data[receiver_id]
-                giver_has = set(giver.courses_to_drop)
-                receiver_wants = set(receiver.courses_to_add)
-                common_items = giver_has & receiver_wants
-                if common_items:
-                    item = common_items.pop()
-                    items.append(item)
-                else:
-                    # No common item, invalid cycle
-                    valid_cycle = False
-                    break
-            if valid_cycle:
+        # Build the list of items being swapped
+        items_list = []
+        valid_cycle = True
+        for i in range(len(cycle)):
+            giver_id = cycle[i]
+            receiver_id = cycle[(i + 1) % len(cycle)]
+            giver = user_data[giver_id]
+            receiver = user_data[receiver_id]
+            giver_has = set([item.strip().lower() for item in giver.courses_to_drop])
+            receiver_wants = set(
+                [item.strip().lower() for item in receiver.courses_to_add]
+            )
+            common_items = giver_has & receiver_wants
+            if common_items:
+                items_list.append(list(common_items))
+            else:
+                # No common item, invalid cycle
+                valid_cycle = False
+                break
+        if valid_cycle:
+            # Now items_list is a list of lists of items that can be swapped between each giver and receiver
+            # Generate all possible combinations of items to swap
+            from itertools import product
+
+            item_combinations = list(product(*items_list))
+            for item_combination in item_combinations:
+                swap_items = list(item_combination)
                 # Create Swap object
                 swap_users = [user_data[user_id] for user_id in cycle]
-                swap = Swap(users=swap_users, items=items)
-                current_app.logger.info(swap)
+                swap = Swap(users=swap_users, items=swap_items)
+                current_app.logger.info(f"Creating swap: {swap}")
                 swap.save()
 
                 # Call notify_users_email with users' emails
                 # notify_users_email([user.email for user in swap_users])
 
-                # Update matched users (excluding the target user)
-                matched_users.update(
-                    user_id for user_id in cycle if user_id != target_user
-                )
-
                 # Update user documents to reflect participation in a swap
                 for i in range(len(cycle)):
                     user = user_data[cycle[i]]
-                    item_dropped = items[i]
-                    item_received = items[i - 1]  # Item received from the previous user
+                    item_dropped = swap_items[i]
+                    item_received = swap_items[
+                        i - 1
+                    ]  # Item received from the previous user
 
                     # Remove item_dropped from courses_to_drop
-                    if item_dropped in user.courses_to_drop:
-                        user.courses_to_drop.remove(item_dropped)
+                    if item_dropped in [
+                        item.strip().lower() for item in user.courses_to_drop
+                    ]:
+                        user.courses_to_drop = [
+                            item
+                            for item in user.courses_to_drop
+                            if item.strip().lower() != item_dropped
+                        ]
 
                     # Remove item_received from courses_to_add
-                    if item_received in user.courses_to_add:
-                        user.courses_to_add.remove(item_received)
+                    if item_received in [
+                        item.strip().lower() for item in user.courses_to_add
+                    ]:
+                        user.courses_to_add = [
+                            item
+                            for item in user.courses_to_add
+                            if item.strip().lower() != item_received
+                        ]
 
                     user.save()
 
-                    # **Update user_has and user_wants dictionaries**
+                    # Update user_has and user_wants dictionaries
                     user_has[item_dropped].discard(user.sess_id)
                     user_wants[item_received].discard(user.sess_id)
 
-                # **Append swap to the swaps list**
-                current_app.logger.info(swap)
+                # Append swap to the swaps list
                 swaps.append(swap)
-            else:
-                # Invalid cycle, skip
-                continue
+        else:
+            # Invalid cycle, skip
+            continue
 
     if swaps:
         print(f"{len(swaps)} swap(s) involving user {target_user_id} created.")
     else:
         print(f"No swap cycles found involving user {target_user_id}")
 
-    # **Return the list of swaps involving the target user**
+    # Return the list of swaps involving the target user
     return swaps
 
 
