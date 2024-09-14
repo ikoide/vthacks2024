@@ -11,9 +11,11 @@ import ThankYouPage from './pages/ThankYouPage';
 import Header from "./components/header";
 const API_URL = import.meta.env.VITE_API_URL;
 import "./styles/styles.scss"
+
 import TradePage from './pages/TradePage';
 import SuccessPage from './pages/SuccessPage';
 import FailurePage from './pages/FailurePage';
+
 interface UserData {
   courses_to_add: string[];
   courses_to_drop: string[];

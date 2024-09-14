@@ -11,6 +11,9 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from '@mui/material';
+
+const WEBSOCKET_URL = import.meta.env.VITE_SOCKET_URL;
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useNavigate } from 'react-router-dom';
 import '../../components/styles/styles.scss';
@@ -29,6 +32,8 @@ const TradePage: React.FC = () => {
   const [pairHasSubmittedCookies, setPairHasSubmittedCookies] = useState<boolean>(false);
   const [timeLeft, setTimeLeft] = useState<number>(600); // 10 minutes in seconds
   const navigate = useNavigate();
+
+  const socket = new WebSocket(WEBSOCKET_URL);
 
   // Start the countdown timer
   useEffect(() => {
