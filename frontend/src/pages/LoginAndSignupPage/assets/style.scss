@@ -1,0 +1,48 @@
+.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centering elements vertically */
+    align-items: flex-start;
+    width: 60%;
+    height: 60vh;
+    background-color: #333; /* Dark background */
+    margin: auto; /* Center the .login div horizontally and vertically */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  
+    .align-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 20px; /* Space between input and button */
+    }
+  
+    .logo {
+        color: white;
+        font-size: 2rem;
+        margin-right: 20px; /* Creates space between logo and input */
+    }
+  
+    .login-input-field {
+        flex-grow: 1; /* Pushes the input to the right */
+        display: flex;
+        justify-content: flex-end; /* Aligns the input to the right */
+        width: 100%;
+    }
+  
+    .login-input {
+        background-color: #b0b0b0; /* Light gray input field background */
+        width: 300px; /* Width of input field */
+    }
+  
+    .login-button {
+        align-self: flex-end; /* Right-align the button */
+        background-color: #3f7fbf; /* Blue button color */
+        color: white;
+        margin-top: 10px; /* Space between input and button */
+    }
+}
