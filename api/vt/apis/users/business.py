@@ -11,6 +11,17 @@ def create_user(data):
     user = User(**data)
     user.save()
 
+    return json.loads(dumps(user.to_mongo()))
+
+
+## Dev route
+def delete_users():
+    users = User.objects().all()
+    for user in users:
+        user.delete()
+
+    return None
+
 
 def update_user(user, data):
     try:
@@ -66,6 +77,6 @@ def get_users(filters):
 def login_user(email, data):
     user = User.objects(Q(email=email) & Q(password=data["password"])).first()
     if user:
-        return str(user.id)
+        return str(user.sess_id)
     else:
         return None

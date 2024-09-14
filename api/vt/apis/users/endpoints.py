@@ -7,6 +7,7 @@ from vt.apis.users.business import (
     update_user,
     delete_user,
     login_user,
+    delete_users,
 )
 from vt.apis.users.dto import user_model, get_user_model, post_user_model
 from vt.apis.users.parsers import user_parser
@@ -25,6 +26,14 @@ class GetUsers(Resource):
         args = user_parser.parse_args()
 
         return get_users(args)
+
+
+@users_ns.route("/delete", endpoint="users_delete")
+class DeleteUsers(Resource):
+    @users_ns.expect(user_parser, validate=True)
+    def get(self):
+        """Delete all users."""
+        return delete_users()
 
 
 @users_ns.route("/new", endpoint="users_new")
