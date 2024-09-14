@@ -3,20 +3,17 @@ from flask_restx.fields import String, Nested, List
 
 user_model = Model(
     "User",
-    {
-        "email": String,
-        "first_name": String,
-        "last_name": String,
-        "profile_picture": String,
-    },
+    {"email": String, "password": String},
 )
 
 
 def get_user_model():
-    user_model["courses_to_add"] = List(Nested(user_model))
+    from vt.apis.courses.dto import course_model
 
-    return user_model
+    return user_model.clone(
+        "UserGet", {"courses_to_add": Nested(course_model, required=True)}
+    )
 
 
 def post_user_model():
-    return user_model
+    return user_model.clone("UserPost")
