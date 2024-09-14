@@ -17,5 +17,9 @@ class User(Document):
     def find_by_id(cls, id):
         return cls.objects(sess_id=id).first()
 
+    @classmethod
+    def find_by_email(cls, email):
+        return cls.objects(email=email).first()
+
     def __repr__(self):
         return f"<User email={self.email}>"

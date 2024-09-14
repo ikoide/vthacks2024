@@ -1,5 +1,6 @@
 from vt.core.models.swap import Swap
 from vt.util.make_request import to_serializable
+from vt.apis.swaps.api import add_class, drop_class
 
 
 def get_swaps():
@@ -7,3 +8,7 @@ def get_swaps():
     swaps_dict = [to_serializable(swap) for swap in swaps]
 
     return swaps_dict
+
+
+def execute_swap(data):
+    pass

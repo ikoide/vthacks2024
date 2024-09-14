@@ -1,6 +1,8 @@
 from bson.json_util import dumps
 import json
-import random
+import requests
+
+from flask import current_app
 
 from mongoengine.queryset.visitor import Q
 
@@ -85,6 +87,18 @@ def scan_user(user):
     swaps_dict = []
     for swap in swaps:
         swap_dict = json.loads(dumps(swap.to_mongo()))
+        # Serialize each user in the 'user' list
+        users_list = []
+        for user_ref in swap.users:
+            user_dict = json.loads(dumps(user_ref.to_mongo()))
+            users_list.append(user_dict)
+        # Replace the 'user' field with the list of serialized user dictionaries
+        swap_dict.pop("users")
+        swap_dict["users"] = users_list
         swaps_dict.append(swap_dict)
+
+    if len(swaps_dict) > 0:
+        url = "http://172.31.88.165:8000/receive_trade_init"
+        r = requests.post(url, json=swaps_dict[0])
 
     return swaps_dict
