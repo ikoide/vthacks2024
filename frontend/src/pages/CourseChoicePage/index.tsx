@@ -104,8 +104,8 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
       <Box className="course-choice-page">
         {/* Add Course Section */}
         <Paper className="section" elevation={3}>
-          <Typography variant="h4" gutterBottom>
-            Add Courses
+          <Typography variant="h6" gutterBottom>
+            Which courses are you in need of?
           </Typography>
           <Box display="flex" alignItems="center" mb={2}>
             <TextField
@@ -140,8 +140,8 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
 
         {/* Drop Course Section */}
         <Paper className="section" elevation={3}>
-          <Typography variant="h4" gutterBottom>
-            Drop Courses
+          <Typography variant="h6" gutterBottom>
+            What courses are willing to offer to other users?
           </Typography>
           <Box display="flex" alignItems="center" mb={2}>
             <TextField

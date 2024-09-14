@@ -22,7 +22,6 @@ const darkTheme = createTheme({
 const ThankYouPage: React.FC = () => {
   return (
     <ThemeProvider theme={darkTheme}>
-      <Header />
       <Box className="thank-you-page">
         <Paper className="section" elevation={3}>
           <Typography variant="h4" gutterBottom>
