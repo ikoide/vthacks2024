@@ -10,7 +10,7 @@ import {
   AccordionDetails,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Header from '../../components/header';
+
 import "./styles/styles.scss"
 
 const darkTheme = createTheme({
