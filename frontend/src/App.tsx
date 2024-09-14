@@ -9,6 +9,10 @@ function App() {
   const location = useLocation();
   const [userData, setUserData] = useState({});
 
+  useEffect(() => {
+    setUserData({ name: 'Guest' });
+  }, []);
+
   return (
     <>
     <Routes key={location.pathname} location={location}>
