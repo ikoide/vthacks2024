@@ -15,5 +15,5 @@ class GetSwaps(Resource):
 
 @swaps_ns.route("/<string:id>/ready", endpoint="swaps_ready")
 class SwapReady(Resource):
-    def post(self):
+    def post(self, id):
         return execute_swap(swaps_ns.payload)
