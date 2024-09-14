@@ -1,3 +1,6 @@
+from bson.json_util import dumps
+import json
+
 from vt.core.models.user import User
 from vt.util.make_request import to_serializable
 
@@ -43,8 +46,17 @@ def delete_user(id):
     return None
 
 
-def get_users():
-    users = User.objects.all()
-    users_dict = [to_serializable(user) for user in users]
+def get_users(filters):
+    query = {}
+    if filters["email"]:
+        query["email"] = User.objects(email=filters["email"])
+
+    users = User.objects(**query).all()
+    users_dict = []
+    for user in users:
+        user_dict = json.loads(dumps(user.to_mongo()))
+        users_dict.append(user_dict)
+
+    return users_dict
 
     return users_dict

@@ -1,6 +1,5 @@
 from flask_restx import Api
 
-from vt.apis.auth.endpoints import auth_ns
 from vt.apis.users.endpoints import users_ns
 from vt.apis.courses.endpoints import courses_ns
 
