@@ -1,0 +1,1 @@
+declare module 'frontend/src/pages/Swaps.jsx'

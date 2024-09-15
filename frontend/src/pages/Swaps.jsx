@@ -8,8 +8,8 @@ const darkTheme = createTheme({
   },
 });
 
-export const Swaps: React.FC = () => {
-  const [swaps, setSwaps] = useState<any[]>([]); // State to store fetched data
+export const Swaps = () => {
+  const [swaps, setSwaps] = useState([]); // State to store fetched data
 
   const fetchSwaps = async () => {
     try {
@@ -49,9 +49,9 @@ export const Swaps: React.FC = () => {
 
         {swaps.length > 0 ? (
           swaps.map((swap, index) => {
-            const crn1: string = swap.items[0]
+            const crn1 = swap.items[0]
             const courseId1 = `${courses[crn1]["Course"].split("-").join(" ")}`
-            const crn2: string = swap.items[1]
+            const crn2 = swap.items[1]
             const courseId2 = `${courses[crn2]["Course"].split("-").join(" ")}`
             const status = swap.status
             return(
