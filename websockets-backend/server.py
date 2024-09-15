@@ -32,6 +32,50 @@ async def receive_trade_init(request):
     print("ongoin trades", on_going_trades)
     return sanic_json({"status": "Trade initialized"}, status=200)
 
+def create_payload(data):
+    """
+    Transforms the input data into a list of dictionaries with 'add', 'drop', and simplified 'cookies'.
+    
+    Parameters:
+        data (dict): The input data containing user information with 'add', 'drop', and 'cookies'.
+        
+    Returns:
+        list: A list of dictionaries, each representing an email entry with 'add', 'drop', and 'cookies'.
+    """
+    payload = []
+    
+    for email, details in data.items():
+        # Convert 'add' and 'drop' from strings to integers
+        try:
+            add_value = int(details.get('add', 0))
+        except ValueError:
+            add_value = 0  # Default value or handle as needed
+        
+        try:
+            drop_value = int(details.get('drop', 0))
+        except ValueError:
+            drop_value = 0  # Default value or handle as needed
+        
+        # Extract cookies with only 'name' and 'value'
+        cookies = {}
+        for cookie in details.get('cookies', []):
+            name = cookie.get('name')
+            value = cookie.get('value')
+            if name and value:
+                cookies[name] = value
+        
+        # Create the entry dictionary
+        entry = {
+            "add": add_value,
+            "drop": drop_value,
+            "cookies": cookies
+        }
+        
+        payload.append(entry)
+    
+    return payload
+
+
 @app.websocket("/ws")
 async def websocket_handler(request, ws):
     trade_id = None
@@ -54,7 +98,7 @@ async def websocket_handler(request, ws):
         elif data["type"] == "trade_ready":
             print("SOJMEONE IS READYADSF")
             # Update the trade data
-            on_going_trades[data["trade_id"]][data["user_id"]]["cookies"] = data["cookies"]
+            on_going_trades[data["trade_id"]][data["user_id"]]["cookies"] = json.loads(data["cookies"])            
             on_going_trades[data["trade_id"]][data["user_id"]]["ready"] = True
             # Broadcast updated trade data to all clients in this trade
             trade_clients = connected_clients.get(data["trade_id"], [])
@@ -64,7 +108,11 @@ async def websocket_handler(request, ws):
             if all(user_data["ready"] for user_data in on_going_trades[data["trade_id"]].values()):
                 # remove the trade from on_going_trades
 
-                requests.post(f"http://172.31.69.54:5001/swaps/{data['trade_id']}/ready", json=on_going_trades[data["trade_id"]])
+                print("\n\n\n\n\n")
+                print("WILL SEND THIS ", on_going_trades[data["trade_id"]])
+                print("\n\n\n\n\n")
+
+                requests.post(f"http://172.31.69.54:5001/swaps/{data['trade_id']}/ready", json=create_payload(on_going_trades[data["trade_id"]]))
                 
                 del on_going_trades[data["trade_id"]]
                 # Broadcast end trade to all clients in this trade
