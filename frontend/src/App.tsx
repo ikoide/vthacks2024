@@ -14,6 +14,7 @@ import "./styles/styles.scss"
 
 import TradePage from './pages/TradePage';
 import { ClassesPage } from './pages/ClassesPage/ClassesPage';
+import { Swaps } from './pages/Swaps';
 
 interface UserData {
   courses_to_add: string[];
@@ -66,7 +67,7 @@ function App() {
     <>
     {!location.pathname.includes('login') && <Header setUserData={setUserData} />}
     <Routes key={location.pathname} location={location}>
-      <Route path="/" element={<HomePage userData={userData} setUserData={setUserData}/>} />
+      <Route path="/" element={<Swaps />} />
       <Route path="/login-or-signup" element={<LoginPageAndSignUp setUserData={setUserData} />} />
       <Route path="*" element={<NotFound404 />} />
       <Route path="/add-drop" element={<CourseChoicePage userData={userData} setUserData={setUserData} />} />
