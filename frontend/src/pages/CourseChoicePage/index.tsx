@@ -140,7 +140,7 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
       <Box className="course-choice-page">
         {/* Add Course Section */}
         <Paper className="section" elevation={3}>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="subtitle1" gutterBottom>
             Which courses are you in need of?
           </Typography>
           <Box display="flex" alignItems="center" mb={2}>
@@ -183,11 +183,9 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
               </Paper>
             ))}
           </Box>
-        </Paper>
 
         {/* Drop Course Section */}
-        <Paper className="section" elevation={3}>
-          <Typography variant="h6" gutterBottom>
+          <Typography sx={{mt: 4.5}} variant="subtitle1" gutterBottom>
             What courses are you willing to offer to other users?
           </Typography>
           <Box display="flex" alignItems="center" mb={2}>
@@ -229,11 +227,6 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
                 </IconButton>
               </Paper>
             ))}
-          </Box>
-        </Paper>
-
-        {/* Done Button */}
-        <Paper className="section" elevation={3}>
           <Button
             variant="contained"
             color="primary"
@@ -263,6 +256,7 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
           >
             Find Matches
           </Button>
+          </Box>
         </Paper>
       </Box>
     </ThemeProvider>

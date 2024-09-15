@@ -114,7 +114,6 @@ const Header: React.FC<HeaderProps> = ({ userData, setUserData }) => {
                     "&:hover": {
                       backgroundColor: "#bd4f4f",
                     },
-
                   }}
                 >
                   Logout
