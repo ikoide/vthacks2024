@@ -23,7 +23,9 @@ interface UserData {
   courses_to_drop: string[];
   sess_id: string;
   email: string;
+  name: string; 
 }
+
 
 const darkTheme = createTheme({
   palette: {
