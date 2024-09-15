@@ -8,7 +8,7 @@ const darkTheme = createTheme({
   },
 });
 
-export const Swaps = () => {
+export const Swaps = ({ userData, setUserData }) => {
   const [swaps, setSwaps] = useState([]); // State to store fetched data
 
   const fetchSwaps = async () => {
@@ -45,7 +45,7 @@ export const Swaps = () => {
         alignItems: 'center', // Centering the cards horizontally
       }}>
 
-        <Typography sx={{ color: "white", fontWeight: 600, pb: 3 }} variant='h3'>Hello, Imran 🫣</Typography>
+        <Typography sx={{ color: "white", fontWeight: 600, pb: 3 }} variant='h3'>Hello, {userData.name} 🫣</Typography>
 
         {swaps.length > 0 ? (
           swaps.map((swap, index) => {
