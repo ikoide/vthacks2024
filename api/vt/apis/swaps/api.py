@@ -1,5 +1,8 @@
 import json
 import requests
+import os
+
+from flask import current_app
 
 
 def add_class_to_pending(crn, cookies):
@@ -20,6 +23,9 @@ def get_drop_classes(crn, cookies):
     url = "https://registration.es.cloud.vt.edu/StudentRegistrationSsb/ssb/classRegistration/submitRegistration/batch"
 
     r = requests.get(url, cookies=cookies)
+    current_app.logger.info("Cookies: " + str(cookies))
+    current_app.logger.info(crn)
+    current_app.logger.info(r.content)
     response = r.json()
     data = response["data"]["update"]
     id = ""
@@ -32,8 +38,13 @@ def get_drop_classes(crn, cookies):
 
 
 def form_drop_payload(id):
-    with open("drop.json", "r") as f:
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    json_path = os.path.join(script_dir, "drop.json")
+    current_app.logger.info(json_path)
+
+    with open(json_path, "r") as f:
         payload = json.load(f)
+        current_app.logger.info(payload)
         payload["update"][0]["id"] = int(id)
 
     return payload

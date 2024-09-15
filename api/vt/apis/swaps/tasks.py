@@ -143,7 +143,9 @@ def match_user_in_cycles(target_user_id, max_cycle_length=3):
                 swap.save()
 
                 # Call notify_users_email with users' emails
-                # notify_users_email([user.email for user in swap_users])
+                notify_users_email(
+                    [user.email for user in swap_users], trade_id=str(swap.id)
+                )
 
                 # Update user documents to reflect participation in a swap
                 for i in range(len(cycle)):
@@ -194,13 +196,19 @@ def match_user_in_cycles(target_user_id, max_cycle_length=3):
     return swaps
 
 
-def notify_users_email(recipients):
+def notify_users_email(recipients, trade_id):
     for email in recipients:
+        accept_url = f"https://hokieswap.com/trade/{trade_id}"
+        deny_url = f"https://hokieswap.com/trade/{trade_id}"
         payload = {
             "sender": {"email": "mail@hokieswap.com", "name": "HokieSWAP"},
             "to": [{"email": email}],
             "subject": "You have a new swap available!",
-            "htmlContent": "<a href='#'>Accept</a><br><a href='#'>Deny</a>",
+            "htmlContent": (
+                f"<a href='{accept_url}'>Accept</a><br>"
+                f"<a href='{deny_url}'>Deny</a>"
+            ),
+            "textContent": (f"Accept: {accept_url}\n" f"Deny: {deny_url}"),
         }
         send_email(payload)
 
@@ -209,7 +217,7 @@ def send_email(payload):
     url = "https://api.sendinblue.com/v3/smtp/email"
     headers = {
         "accept": "application/json",
-        "api-key": "YOUR_API_KEY_HERE",
+        "api-key": "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",
         "content-type": "application/json",
     }
     # Send email with requests
@@ -217,4 +225,3 @@ def send_email(payload):
     print(resp)
     print(resp.text)
     # Handle response as needed
-
