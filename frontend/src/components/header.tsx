@@ -75,13 +75,6 @@ const Header: React.FC<HeaderProps> = ({ userData, setUserData }) => {
         >
           Add/Drop
         </Button>
-        <Button
-          variant="contained"
-          sx={{ color: "#ffffff", mx: 1 }}
-          onClick={() => navigate("/classes")}
-        >
-          Courses
-        </Button>
         <div style={{ position: "relative", display: "inline-block" }} ref={menuRef}>
           <Button
             variant="outlined"

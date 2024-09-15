@@ -236,10 +236,11 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
         <Paper className="section" elevation={3}>
           <Button
             variant="contained"
-            color="success"
+            color="primary"
             sx={
               {
                 color: "#ffffff",
+                "background-color": "#1976d2!important"
               }
             }
             onClick={() => {
@@ -260,7 +261,7 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
             fullWidth
             size="large"
           >
-            Submit to Find Matches
+            Find Matches
           </Button>
         </Paper>
       </Box>

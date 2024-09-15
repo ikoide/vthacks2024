@@ -32,7 +32,7 @@ const ThankYouPage: React.FC = () => {
           </Typography>
         <br></br>
         <Typography variant="body2" gutterBottom>
-            If you need to edit your courses, click the Add/Drop button in the navigation bar.
+            To continue editing your courses, click <a href="https://hokieswap.com/add-drop">here</a>.
           </Typography>
           <br></br>
           <br></br>
