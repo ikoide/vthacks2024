@@ -1,33 +1,24 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-import LoginPageAndSignUp from './pages/LoginAndSignupPage';
-import NotFound404 from './components/HTTPErrors/NotFound404';
-import CourseChoicePage from './pages/CourseChoicePage';
-import ThankYouPage from './pages/ThankYouPage';
+import LoginPageAndSignUp from './pages/LoginAndSignupPage/index.tsx';
+import NotFound404 from './components/HTTPErrors/NotFound404/index.tsx';
+import CourseChoicePage from './pages/CourseChoicePage/index.tsx';
+import ThankYouPage from './pages/ThankYouPage/index.tsx';
 
 
-import Header from "./components/header";
+import Header from "./components/header.tsx";
 const API_URL = import.meta.env.VITE_API_URL;
 import "./styles/styles.scss"
 
-import TradePage from './pages/TradePage';
-import { ClassesPage } from './pages/ClassesPage/ClassesPage';
-import { Swaps } from './pages/Swaps';
-
-interface UserData {
-  courses_to_add: string[];
-  courses_to_drop: string[];
-  sess_id: string;
-  email: string;
-  name: string;
-
-}
+import TradePage from './pages/TradePage/index.tsx';
+import { ClassesPage } from './pages/ClassesPage/ClassesPage.tsx';
+import { Swaps } from './pages/Swaps.jsx';
 
 
 function App() {
   const location = useLocation();
-  const [userData, setUserData] = useState<UserData>({ courses_to_add: [], courses_to_drop: [] , sess_id: "", email: "", name: ""});
+  const [userData, setUserData] = useState({ courses_to_add: [], courses_to_drop: [] , sess_id: "", email: "", name: ""});
 
   const navigate = useNavigate();
 
