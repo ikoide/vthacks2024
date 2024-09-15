@@ -8,6 +8,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  Link
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import "./styles/styles.scss"
@@ -32,7 +33,7 @@ const ThankYouPage: React.FC = () => {
           </Typography>
         <br></br>
         <Typography variant="body2" gutterBottom>
-            To continue editing your courses, click <a href="https://hokieswap.com/add-drop">here</a>.
+            To continue editing your courses, click <Link href="https://hokieswap.com/add-drop">here</Link>.
           </Typography>
           <br></br>
           <br></br>
@@ -50,7 +51,7 @@ const ThankYouPage: React.FC = () => {
                 <ol>
                   <li>Install the Cookie Editor extension from the Chrome Web Store:  
                     <br />
-                    <a href="https://chromewebstore.google.com/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm" target="_blank" rel="noopener noreferrer">Cookie Editor</a>.
+                    <Link href="https://chromewebstore.google.com/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm" target="_blank" rel="noopener noreferrer">Cookie Editor</Link>.
                   </li>
                   <li>Log into Hokie Spa within 10 minutes of receiving the email notification.</li>
                   <li>Click on the Cookie Editor icon in your browser toolbar and press the bottom-right <strong>Export</strong> button to save your cookies as a JSON file.</li>
