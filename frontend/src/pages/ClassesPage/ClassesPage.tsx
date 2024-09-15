@@ -15,13 +15,6 @@ export const ClassesPage = () => {
         </TableHead>
         <TableBody>
           <TableRow>
-            <TableCell sx={{color: "white"}}>CRN ?</TableCell>
-            <TableCell sx={{color: "white"}}>Course</TableCell>
-            <TableCell sx={{color: "white"}}>Title</TableCell>
-            <TableCell sx={{color: "white"}}>Cr Hrs</TableCell>
-            <TableCell sx={{color: "white"}}>End</TableCell>
-          </TableRow>
-          <TableRow>
             <TableCell sx={{color: "white"}}>40126</TableCell>
             <TableCell sx={{color: "white"}}>ACIS-1004</TableCell>
             <TableCell sx={{color: "white"}}>Accounting Foundations</TableCell>
