@@ -24,9 +24,11 @@ const Header: React.FC<HeaderProps> = ({ setUserData }) => {
       <header>
         <Toolbar>
           <Box sx={{ flexGrow: 1 }}>
+            <a className="logo" href="/add-drop">
             <Typography variant="h6" component="div" sx={{ color: "#ffffff" }}>
               HokieSWAP
             </Typography>
+            </a>
           </Box>
           <Button sx={{ color: "#ffffff" }} onClick={() => navigate("/classes")}>Courses</Button>
           <Button
