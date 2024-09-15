@@ -15,6 +15,9 @@ import {
   TextField 
 } from '@mui/material';
 
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import './assets/style.scss';
@@ -130,14 +133,18 @@ const TradePage: React.FC<TradePageProps> = ({ userData }) => {
                         <Typography variant="body1">
                             Thank you for participating in the trade. Your items have been successfully exchanged.
                         </Typography>
-                        <Button
+                                <Button
                             variant="contained"
                             color="primary"
-                            onClick={() => navigate('/dashboard')}
+                            href="https://registration.es.cloud.vt.edu/StudentRegistrationSsb/ssb/classRegistration/classRegistration"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            endIcon={<ArrowForwardIcon />}
                             className="dashboard-button"
                         >
-                            Go to Dashboard
+                            Go to Hokie Spa
                         </Button>
+
                     </Box>
                 ) : (
                     // Trade In Progress Screen

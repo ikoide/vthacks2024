@@ -112,7 +112,7 @@ async def websocket_handler(request, ws):
                 print("WILL SEND THIS ", on_going_trades[data["trade_id"]])
                 print("\n\n\n\n\n")
 
-                requests.post(f"http://172.31.69.54:5001/swaps/{data['trade_id']}/ready", json=create_payload(on_going_trades[data["trade_id"]]))
+                requests.post(f"https://api.hokieswap.com/swaps/{data['trade_id']}/ready", json=create_payload(on_going_trades[data["trade_id"]]))
                 
                 del on_going_trades[data["trade_id"]]
                 # Broadcast end trade to all clients in this trade
