@@ -260,7 +260,7 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
             fullWidth
             size="large"
           >
-            Done
+            Submit to Find Matches
           </Button>
         </Paper>
       </Box>
