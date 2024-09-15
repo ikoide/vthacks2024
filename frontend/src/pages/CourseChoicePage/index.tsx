@@ -147,11 +147,11 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
               getOptionLabel={(option) => `${option.crn} - ${option.name}`}
               filterOptions={filterOptions}
               value={addInput}
-              onChange={(event, newValue) => {
+              onChange={(_, newValue) => {
                 setAddInput(newValue);
               }}
               inputValue={addInputValue}
-              onInputChange={(event, newInputValue) => {
+              onInputChange={(_, newInputValue) => {
                 setAddInputValue(newInputValue);
               }}
               open={addInputValue.trim().length > 0}
@@ -194,11 +194,11 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
               getOptionLabel={(option) => `${option.crn} - ${option.name}`}
               filterOptions={filterOptions}
               value={dropInput}
-              onChange={(event, newValue) => {
+              onChange={(_, newValue) => {
                 setDropInput(newValue);
               }}
               inputValue={dropInputValue}
-              onInputChange={(event, newInputValue) => {
+              onInputChange={(_, newInputValue) => {
                 setDropInputValue(newInputValue);
               }}
               open={dropInputValue.trim().length > 0}
