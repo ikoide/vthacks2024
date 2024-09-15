@@ -1,7 +1,5 @@
 import React from "react";
 import { Toolbar, Typography, Button, Box } from "@mui/material";
-import { ArrowDropDown } from "@mui/icons-material";
-import { motion, AnimatePresence } from "framer-motion";
 import "../styles/styles.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -18,14 +16,10 @@ interface HeaderProps {
   setUserData: React.Dispatch<React.SetStateAction<UserData>>;
 }
 
-const Header: React.FC<HeaderProps> = ({ userData, setUserData }) => {
+const Header: React.FC<HeaderProps> = ({ setUserData }) => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(false);
   const menuRef = React.useRef<HTMLDivElement>(null);
-
-  const handleMenuToggle = () => {
-    setIsOpen(!isOpen);
-  };
 
   const handleLogout = () => {
     localStorage.removeItem("session");
