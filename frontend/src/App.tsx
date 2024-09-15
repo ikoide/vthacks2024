@@ -1,7 +1,6 @@
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-import HomePage from './pages/HomePage';
 import LoginPageAndSignUp from './pages/LoginAndSignupPage';
 import NotFound404 from './components/HTTPErrors/NotFound404';
 import CourseChoicePage from './pages/CourseChoicePage';
