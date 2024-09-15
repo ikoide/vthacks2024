@@ -64,6 +64,10 @@ export const Swaps = () => {
                 backgroundColor: "rgba(229,199,30,0.05)",
                 color: "rgba(229,199,30,0.5)",
                 border: "1px solid rgba(229,199,30,0.2)"
+              }, failed: {
+                backgroundColor: "rgba(219,43,43,0.05)",
+                color: "rgba(219,43,43,0.5)",
+                border: "1px solid rgba(219,43,43,0.2)"
               }
             }
             return (
