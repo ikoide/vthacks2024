@@ -25,7 +25,6 @@ export const Swaps = ({ userData, setUserData }) => {
       }
 
       const data = await response.json();
-      console.log('Swaps data:', data);
       setSwaps(data); // Store fetched data in state
     } catch (error) {
       console.error('Error fetching swaps:', error);
@@ -46,13 +45,13 @@ export const Swaps = ({ userData, setUserData }) => {
       }}>
 
         <Typography sx={{
-            color: "white",
-            fontWeight: 600,
-            pb: 3,
-            textAlign: "left", // Aligning the text to the left
-            width: "100%", // Ensuring the full width to align left properly
-            maxWidth: "600px" // Optional: to limit the width of the text area
-          }} variant='h3'>Hello, {userData.name} 🫣</Typography>
+          color: "white",
+          fontWeight: 600,
+          pb: 3,
+          textAlign: "left", // Aligning the text to the left
+          width: "100%", // Ensuring the full width to align left properly
+          maxWidth: "600px" // Optional: to limit the width of the text area
+        }} variant='h3'>Hello, {userData.name} 🫣</Typography>
 
         {swaps.length > 0 ? (
           swaps.map((swap, index) => {

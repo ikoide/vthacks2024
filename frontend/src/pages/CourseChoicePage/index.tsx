@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from "react";
+import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -23,7 +23,7 @@ interface UserData {
   courses_to_drop: string[];
   sess_id: string;
   email: string;
-  name: string; 
+  name: string;
 }
 
 
@@ -63,7 +63,6 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
   });
 
   const updateUserData = (updatedUserData: UserData) => {
-    console.log("Updating user data:", updatedUserData);
     fetch(`${API_URL}/users/${updatedUserData.sess_id}`, {
       method: "PATCH",
       headers: {
@@ -73,12 +72,8 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Backend returned:", data);
         setUserData(data);
       })
-      .catch((error) => {
-        console.error("Error updating user data:", error);
-      });
   };
 
   const handleAddCourse = (): void => {
@@ -184,8 +179,8 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
             ))}
           </Box>
 
-        {/* Drop Course Section */}
-          <Typography sx={{mt: 4.5}} variant="subtitle1" gutterBottom>
+          {/* Drop Course Section */}
+          <Typography sx={{ mt: 4.5 }} variant="subtitle1" gutterBottom>
             What courses are you willing to offer to other users?
           </Typography>
           <Box display="flex" alignItems="center" mb={2}>
@@ -227,35 +222,34 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
                 </IconButton>
               </Paper>
             ))}
-          <Button
-            variant="contained"
-            color="primary"
-            sx={
-              {
-                color: "#ffffff",
-                "background-color": "#1976d2!important"
+            <Button
+              variant="contained"
+              color="primary"
+              sx={
+                {
+                  color: "#ffffff",
+                  "background-color": "#1976d2!important"
+                }
               }
-            }
-            onClick={() => {
-              // Post to backend /users/session_id/scan
-              fetch(`${API_URL}/users/${userData.sess_id}/scan`, {
-                method: "GET",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              })
-                .then((res) => res.json())
-                .then((data) => {
-                  console.log("Backend returned:", data);
-                });
+              onClick={() => {
+                // Post to backend /users/session_id/scan
+                if (userData.courses_to_drop.length > 0 && userData.courses_to_add.length > 0) {
+                  fetch(`${API_URL}/users/${userData.sess_id}/scan`, {
+                    method: "GET",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  })
+                    .then((res) => res.json())
 
-              navigate("/thank-you");
-            }}
-            fullWidth
-            size="large"
-          >
-            Find Matches
-          </Button>
+                  navigate("/thank-you");
+                }
+              }}
+              fullWidth
+              size="large"
+            >
+              Find Matches
+            </Button>
           </Box>
         </Paper>
       </Box>
