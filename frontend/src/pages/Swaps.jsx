@@ -79,9 +79,13 @@ export const Swaps = () => {
                   </Box>
                   <Box>
                     <Button sx={{
-                        backgroundColor: "rgba(18,189,24,0.05)",
-                        color: "rgba(18,189,24,0.5)",
-                        border: "1px solid rgba(18,189,24,0.2)"
+                       // success colors
+                       // backgroundColor: "rgba(18,189,24,0.05)",
+                       // color: "rgba(18,189,24,0.5)",
+                       // border: "1px solid rgba(18,189,24,0.2)"
+                       backgroundColor: "rgba(229,199,30,0.05)",
+                       color: "rgba(229,199,30,0.5)",
+                       border: "1px solid rgba(229,199,30,0.2)"
                         }}>{status}</Button>
                   </Box>
                   </Box>
