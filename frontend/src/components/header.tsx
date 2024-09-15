@@ -11,7 +11,6 @@ interface UserData {
   sess_id: string;
   email: string;
   name: string;
-
 }
 
 interface HeaderProps {
@@ -62,8 +61,16 @@ const Header: React.FC<HeaderProps> = ({ userData, setUserData }) => {
     <header>
       <Toolbar>
         <Box sx={{ flexGrow: 1 }}>
-          <a className="logo" href="/">
-            <Typography variant="h6" component="div" sx={{ color: "#ffffff", fontWeight: "bold" }}>
+          <a
+            className="logo"
+            href="/"
+            style={{ display: "flex", alignItems: "center", textDecoration: "none" }}
+          >
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ color: "#ffffff", fontWeight: "bold" }}
+            >
               HokieSWAP
             </Typography>
           </a>
@@ -96,9 +103,9 @@ const Header: React.FC<HeaderProps> = ({ userData, setUserData }) => {
                   top: "100%",
                   left: 0,
                   zIndex: 1,
-                  backgroundColor: "#c93838", // Set dropdown background to grey
+                  backgroundColor: "#c93838",
                   boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                  width: "100%", // Match the button's width
+                  width: "100%",
                   borderRadius: "4px",
                   overflow: "hidden",
                 }}
@@ -108,7 +115,7 @@ const Header: React.FC<HeaderProps> = ({ userData, setUserData }) => {
                   sx={{
                     width: "100%",
                     justifyContent: "flex-start",
-                    padding: "8px 16px",  
+                    padding: "8px 16px",
                     backgroundColor: "#c93838",
                     color: "#ffffff",
                     "&:hover": {

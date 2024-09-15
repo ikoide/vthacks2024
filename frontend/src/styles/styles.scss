@@ -1,7 +1,13 @@
+@font-face {
+  font-family: "Exo 2";
+  src: url("../styles/Exo_2/Exo2-VariableFont_wght.ttf");
+}
+
 body {
-    background-color: #1a1a1a;
+    background-color: #131313;
     margin: 0;
     padding: 0;
+    font-family: "Exo 2" !important; /* Corrected syntax */
 }
 
 .logo {
@@ -10,3 +16,4 @@ body {
 .logo:hover {
     text-decoration: none;
 }
+
