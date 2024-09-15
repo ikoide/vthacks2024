@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, createTheme, ThemeProvider, Typography, Box } from '@mui/material';
+import { Card, CardContent, createTheme, ThemeProvider, Typography, Box, Button } from '@mui/material';
 import { courses } from "../../public/courses"
 
 const darkTheme = createTheme({
@@ -64,13 +64,27 @@ export const Swaps = () => {
             >
               <Card variant="elevation">
                 <CardContent>
+                  <Box sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center"
+                    }}>
+                  <Box>
                   <Typography variant="body2" color='text.secondary'>
                     SWAP: {swap._id["$oid"]} {/* Assuming `id` is part of the object */}
                   </Typography>
                   <Typography variant="h6" color="text.primary" sx={{mb: -1}}>
                     {courseId1} {`→`} {courseId2} {/* Assuming these are fields */}
                   </Typography>
-                  <Typography>{status}</Typography>
+                  </Box>
+                  <Box>
+                    <Button sx={{
+                        backgroundColor: "rgba(18,189,24,0.05)",
+                        color: "rgba(18,189,24,0.5)",
+                        border: "1px solid rgba(18,189,24,0.2)"
+                        }}>{status}</Button>
+                  </Box>
+                  </Box>
                 </CardContent>
               </Card>
             </Box>
