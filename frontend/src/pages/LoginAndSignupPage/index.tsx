@@ -7,10 +7,14 @@ import {
   Box,
   ThemeProvider,
   createTheme,
+  Grid,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import './assets/style.scss';
+
+// Import the image
+import logoImage from './hokieSwap.png';
 
 enum Page {
   EMAIL = 'EMAIL',
@@ -159,7 +163,7 @@ const LoginPageAndSignUp: React.FC<LoginPageAndSignUpProps> = ({ setUserData }) 
         justifyContent="center"
         minHeight="100vh"
       >
-        <Paper elevation={3} className="login-container">
+        <Paper elevation={3} className="login-container" sx={{ padding: 3 }}>
           <AnimatePresence>
             <motion.div
               key="login-content"
@@ -170,85 +174,123 @@ const LoginPageAndSignUp: React.FC<LoginPageAndSignUpProps> = ({ setUserData }) 
               style={{ overflow: 'hidden' }}
               layout // Enable layout animations
             >
-              <Box className="logo" mb={3} textAlign="left">
-                <Typography variant="h5" sx={{ color: "#ffffff", fontWeight: "bold" }}>HokieSWAP</Typography>
-                <Typography variant="body2" sx={{ color: '#c4c4c4 !important;', "margin": "0.2rem 0rem" }}>Login or signup below</Typography>
-                <br></br>
-              </Box>
-              <Box className="login-input-field" display="flex" flexDirection="column" gap={2}>
-                <AnimatePresence initial={false}>
-                  {page === Page.SIGNUP && (
-                    <motion.div
-                      key="name-field"
-                      initial={{ opacity: 0, y: 20 }} // Enters from below
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 20 }}
-                      transition={{ duration: 0.3 }}
-                      layout // Animate layout changes
-                    >
-                      <TextField
-                        label="Name"
-                        variant="outlined"
-                        value={name}
-                        onChange={handleNameChange}
-                        fullWidth
-                        inputRef={nameInputRef}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            passwordInputRef.current?.focus();
-                          }
+              <Grid container spacing={3}>
+                <Grid item xs={13}>
+                  <Box
+                    display="flex"
+                    alignItems="center" // Changed from "center" to "baseline"
+                    justifyContent="space-between"
+                    mb={-1}
+                  >
+                    {/* HokieSWAP text */}
+                    <Box>
+                      <Typography variant="h5" sx={{ color: '#ffffff', fontWeight: 'bold' }}>
+                        HokieSWAP
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{ color: '#c4c4c4', margin: '0.2rem 0rem' }}
+                      >
+                        Login or signup below
+                      </Typography>
+                    </Box>
+                    {/* Image */}
+                    <Box>
+                      <img
+                        src={logoImage}
+                        alt="Logo"
+                        style={{
+                          width: '90px',
+                          height: 'auto',
+                          marginBottom: '20px', // Added marginTop to move the image up
                         }}
                       />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                <TextField
-                  label="Email"
-                  variant="outlined"
-                  value={email}
-                  onChange={handleEmailChange}
-                  disabled={page !== Page.EMAIL}
-                  fullWidth
-                  inputRef={emailInputRef}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && page === Page.EMAIL) {
-                      handleNext();
-                    }
-                  }}
-                />
-                <AnimatePresence initial={false}>
-                  {(page === Page.PASSWORD || page === Page.SIGNUP) && (
-                    <motion.div
-                      key="password-field"
-                      initial={{ opacity: 0, y: -20 }} // Enters from above
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
-                      layout // Animate layout changes
+                    </Box>
+                  </Box>
+                  <Box className="login-input-field" display="flex" flexDirection="column" gap={2}>
+                    <AnimatePresence initial={false}>
+                      {page === Page.SIGNUP && (
+                        <motion.div
+                          key="name-field"
+                          initial={{ opacity: 0, y: 20 }} // Enters from below
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 20 }}
+                          transition={{ duration: 0.3 }}
+                          layout // Animate layout changes
+                        >
+                          <TextField
+                            label="Name"
+                            variant="outlined"
+                            value={name}
+                            onChange={handleNameChange}
+                            fullWidth
+                            inputRef={nameInputRef}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                passwordInputRef.current?.focus();
+                              }
+                            }}
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    <TextField
+                      label="Email"
+                      variant="outlined"
+                      value={email}
+                      onChange={handleEmailChange}
+                      disabled={page !== Page.EMAIL}
+                      fullWidth
+                      inputRef={emailInputRef}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && page === Page.EMAIL) {
+                          handleNext();
+                        }
+                      }}
+                    />
+                    <AnimatePresence initial={false}>
+                      {(page === Page.PASSWORD || page === Page.SIGNUP) && (
+                        <motion.div
+                          key="password-field"
+                          initial={{ opacity: 0, y: -20 }} // Enters from above
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.3 }}
+                          layout // Animate layout changes
+                        >
+                          <TextField
+                            label="Password"
+                            variant="outlined"
+                            type="password"
+                            value={password}
+                            onChange={handlePasswordChange}
+                            fullWidth
+                            inputRef={passwordInputRef}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                handleNext();
+                              }
+                            }}
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </Box>
+                  <Box mt={3} textAlign="center">
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      sx={{
+                        width: '100%',
+                        backgroundColor: '#1976d2',
+                        '&:hover': { backgroundColor: '#13599e' },
+                      }}
                     >
-                      <TextField
-                        label="Password"
-                        variant="outlined"
-                        type="password"
-                        value={password}
-                        onChange={handlePasswordChange}
-                        fullWidth
-                        inputRef={passwordInputRef}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            handleNext();
-                          }
-                        }}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </Box>
-              <Box mt={3} textAlign="center">
-                <Button variant="contained"  onClick={handleNext} sx={{ width: '100%',backgroundColor: '#1976d2', "&:hover": { backgroundColor: "#13599e" } }}>
-                  Next
-                </Button>
-              </Box>
+                      Next
+                    </Button>
+                  </Box>
+                </Grid>
+              </Grid>
             </motion.div>
           </AnimatePresence>
         </Paper>
