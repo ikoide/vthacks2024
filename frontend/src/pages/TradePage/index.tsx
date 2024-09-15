@@ -73,7 +73,6 @@ const TradePage: React.FC<TradePageProps> = ({ userData }) => {
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log("The data is: ", data);
                 if (data.email === null) {
                     localStorage.removeItem("session");
                     navigate("/login-or-signup");
@@ -98,10 +97,6 @@ const TradePage: React.FC<TradePageProps> = ({ userData }) => {
             } else if (data.type === 'error') {
                 console.error(data.message);
             }
-        };
-
-        socket.onclose = () => {
-            console.log('WebSocket disconnected');
         };
 
         setSocket(socket);
