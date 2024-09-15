@@ -13,6 +13,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 import "./styles/styles.scss"
 
 import TradePage from './pages/TradePage';
+import { ClassesPage } from './pages/ClassesPage';
 
 interface UserData {
   courses_to_add: string[];
@@ -63,7 +64,7 @@ function App() {
 
   return (
     <>
-    <Header setUserData={setUserData} />
+    {!location.pathname.includes('login') && <Header setUserData={setUserData} />}
     <Routes key={location.pathname} location={location}>
       <Route path="/" element={<HomePage userData={userData} setUserData={setUserData}/>} />
       <Route path="/login-or-signup" element={<LoginPageAndSignUp setUserData={setUserData} />} />
@@ -71,6 +72,7 @@ function App() {
       <Route path="/add-drop" element={<CourseChoicePage userData={userData} setUserData={setUserData} />} />
       <Route path="/thank-you" element={<ThankYouPage />} />
       <Route path="/trade/:trade_id" element={<TradePage userData={userData}  />} />
+      <Route path="/classes" element={<ClassesPage />} />
     </Routes>
     </>
   )

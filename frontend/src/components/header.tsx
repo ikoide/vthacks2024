@@ -28,8 +28,8 @@ const Header: React.FC<HeaderProps> = ({ setUserData }) => {
               HokieSWAP
             </Typography>
           </Box>
+          <Button sx={{ color: "#ffffff" }} onClick={() => navigate("/classes")}>Classes</Button>
           <Button
-            color="inherit"
             sx={{ color: "#ffffff" }}
             onClick={() => {
               localStorage.removeItem("session");
