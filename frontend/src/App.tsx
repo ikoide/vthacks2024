@@ -13,7 +13,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 import "./styles/styles.scss"
 
 import TradePage from './pages/TradePage';
-import { ClassesPage } from './pages/ClassesPage';
+import { ClassesPage } from './pages/ClassesPage/ClassesPage';
 
 interface UserData {
   courses_to_add: string[];

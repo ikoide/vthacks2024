@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ setUserData }) => {
               HokieSWAP
             </Typography>
           </Box>
-          <Button sx={{ color: "#ffffff" }} onClick={() => navigate("/classes")}>Classes</Button>
+          <Button sx={{ color: "#ffffff" }} onClick={() => navigate("/classes")}>Courses</Button>
           <Button
             sx={{ color: "#ffffff" }}
             onClick={() => {
