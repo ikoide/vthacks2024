@@ -6,6 +6,7 @@ swap_model = Model(
     {
         "swapped_on": DateTime,
         "created_on": DateTime,
+        "status": String,
     },
 )
 
