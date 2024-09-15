@@ -64,7 +64,7 @@ function App() {
 
   return (
     <>
-    {!location.pathname.includes('login') && <Header setUserData={setUserData} />}
+    {!location.pathname.includes('login') && <Header userData={userData} setUserData={setUserData} />}
     <Routes key={location.pathname} location={location}>
       <Route path="/" element={<HomePage userData={userData} setUserData={setUserData}/>} />
       <Route path="/login-or-signup" element={<LoginPageAndSignUp setUserData={setUserData} />} />
