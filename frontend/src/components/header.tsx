@@ -30,6 +30,7 @@ const Header: React.FC<HeaderProps> = ({ setUserData }) => {
             </Typography>
             </a>
           </Box>
+          <Button sx={{ color: "#ffffff" }} onClick={() => navigate("/classes")}>Edit Add/Drop</Button>
           <Button sx={{ color: "#ffffff" }} onClick={() => navigate("/classes")}>Courses</Button>
           <Button
             sx={{ color: "#ffffff" }}
