@@ -26,9 +26,16 @@ const ThankYouPage: React.FC = () => {
           <Typography variant="h4" gutterBottom>
             Thank You!
           </Typography>
+          <br></br>
           <Typography variant="body1" gutterBottom>
             Thank you for submitting your course swap request. You will receive an email when a match is found.
           </Typography>
+        <br></br>
+        <Typography variant="body2" gutterBottom>
+            If you need to edit your courses, click the Add/Drop button in the navigation bar.
+          </Typography>
+          <br></br>
+          <br></br>
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -39,20 +46,16 @@ const ThankYouPage: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Typography variant="body1">
-                To complete your swap:
+                To complete your swap, follow these steps:
                 <ol>
-                  <li>Log into Hokie Spa within 10 minutes of receiving the email notification.</li>
-                  <li>Copy your session cookies:
-                    <ol type="a">
-                      <li>Open your web browser and navigate to Hokie Spa.</li>
-                      <li>Open the developer tools by pressing <strong>F12</strong> or right-clicking and selecting <strong>Inspect</strong>.</li>
-                      <li>Go to the <strong>Application</strong> (Chrome) or <strong>Storage</strong> (Firefox) tab.</li>
-                      <li>In the left sidebar, under <strong>Storage</strong>, click on <strong>Cookies</strong>, then select the Hokie Spa website.</li>
-                      <li>Locate the relevant session cookies (e.g., <strong>JSESSIONID</strong>), and copy their values.</li>
-                    </ol>
+                  <li>Install the Cookie Editor extension from the Chrome Web Store:  
+                    <br />
+                    <a href="https://chromewebstore.google.com/detail/cookie-editor/hlkenndednhfkekhgcdicdfddnkalmdm" target="_blank" rel="noopener noreferrer">Cookie Editor</a>.
                   </li>
-                  <li>Return to our website and paste the copied cookies into the designated field.</li>
-                  <li>Once your swap partner completes the same steps, the trade will be executed automatically.</li>
+                  <li>Log into Hokie Spa within 10 minutes of receiving the email notification.</li>
+                  <li>Click on the Cookie Editor icon in your browser toolbar and press the bottom-right <strong>Export</strong> button to save your cookies as a JSON file.</li>
+                  <li>Return to our website and paste in the JSON containing your cookies in the designated field.</li>
+                  <li>Once the other people have completed same steps, the trade will be executed automatically.</li>
                 </ol>
                 If you need further assistance, please contact our support team.
               </Typography>

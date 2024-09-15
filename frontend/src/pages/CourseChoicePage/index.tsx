@@ -237,6 +237,11 @@ const CourseChoicePage: React.FC<CourseChoicePageProps> = ({ userData, setUserDa
           <Button
             variant="contained"
             color="success"
+            sx={
+              {
+                color: "#ffffff",
+              }
+            }
             onClick={() => {
               // Post to backend /users/session_id/scan
               fetch(`${API_URL}/users/${userData.sess_id}/scan`, {

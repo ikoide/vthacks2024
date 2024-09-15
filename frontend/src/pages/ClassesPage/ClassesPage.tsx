@@ -1,9 +1,10 @@
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import "./styles.scss"
 
 export const ClassesPage = () => {
   return (
-    <div>
-      <Table>
+    <div className="classes-table">
+      <Table className="classes-table">
         <TableHead>
           <TableRow>
             <TableCell sx={{color: "white"}}>CRN</TableCell>

@@ -10,8 +10,8 @@ interface UserData {
   courses_to_drop: string[];
   sess_id: string;
   email: string;
-  name: string; // Ensure 'name' is included
-  // Include other user data properties as necessary
+  name: string;
+
 }
 
 interface HeaderProps {
@@ -62,8 +62,8 @@ const Header: React.FC<HeaderProps> = ({ userData, setUserData }) => {
     <header>
       <Toolbar>
         <Box sx={{ flexGrow: 1 }}>
-          <a className="logo" href="/add-drop">
-            <Typography variant="h6" component="div" sx={{ color: "#ffffff" }}>
+          <a className="logo" href="/">
+            <Typography variant="h6" component="div" sx={{ color: "#ffffff", fontWeight: "bold" }}>
               HokieSWAP
             </Typography>
           </a>
