@@ -125,7 +125,7 @@ const TradePage: React.FC<TradePageProps> = ({ userData }) => {
 
     return (
         <ThemeProvider theme={darkTheme}>
-            <Box className="trade-page">
+            <Box className="trade-page" sx={{ margin: '2rem' }}>
                 {tradeConcluded ? (
                     // Trade Concluded Screen
                     <Box className="concluded-screen">

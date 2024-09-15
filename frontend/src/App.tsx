@@ -21,12 +21,15 @@ interface UserData {
   courses_to_drop: string[];
   sess_id: string;
   email: string;
-  // Include other user data properties as necessary
+  name: string;
+
 }
+
+
 
 function App() {
   const location = useLocation();
-  const [userData, setUserData] = useState<UserData>({ courses_to_add: [], courses_to_drop: [] , sess_id: "", email: ""});
+  const [userData, setUserData] = useState<UserData>({ courses_to_add: [], courses_to_drop: [] , sess_id: "", email: "", name: ""});
 
   const navigate = useNavigate();
 
@@ -65,7 +68,7 @@ function App() {
 
   return (
     <>
-    {!location.pathname.includes('login') && <Header setUserData={setUserData} />}
+    {!location.pathname.includes('login') && <Header userData={userData} setUserData={setUserData} />}
     <Routes key={location.pathname} location={location}>
       <Route path="/" element={<Swaps />} />
       <Route path="/login-or-signup" element={<LoginPageAndSignUp setUserData={setUserData} />} />

@@ -170,8 +170,10 @@ const LoginPageAndSignUp: React.FC<LoginPageAndSignUpProps> = ({ setUserData }) 
               style={{ overflow: 'hidden' }}
               layout // Enable layout animations
             >
-              <Box className="logo" mb={3} textAlign="center">
-                <Typography variant="h3">HokieSwap</Typography>
+              <Box className="logo" mb={3} textAlign="left">
+                <Typography variant="h5" sx={{ color: "#ffffff", fontWeight: "bold" }}>HokieSWAP</Typography>
+                <Typography variant="body2" sx={{ color: '#c4c4c4 !important;', "margin": "0.2rem 0rem" }}>Login or signup below</Typography>
+                <br></br>
               </Box>
               <Box className="login-input-field" display="flex" flexDirection="column" gap={2}>
                 <AnimatePresence initial={false}>
@@ -243,7 +245,7 @@ const LoginPageAndSignUp: React.FC<LoginPageAndSignUpProps> = ({ setUserData }) 
                 </AnimatePresence>
               </Box>
               <Box mt={3} textAlign="center">
-                <Button variant="contained" color="primary" onClick={handleNext}>
+                <Button variant="contained"  onClick={handleNext} sx={{ width: '100%',backgroundColor: '#1976d2', "&:hover": { backgroundColor: "#13599e" } }}>
                   Next
                 </Button>
               </Box>
