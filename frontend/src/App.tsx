@@ -25,7 +25,6 @@ interface UserData {
 }
 
 
-
 function App() {
   const location = useLocation();
   const [userData, setUserData] = useState<UserData>({ courses_to_add: [], courses_to_drop: [] , sess_id: "", email: "", name: ""});
